@@ -2,7 +2,7 @@
 
 (class citylink (struct #(symbol? from)
 			#(symbol? to)
-			#(positive-real? distance)))
+			#(real? distance)))
 
 (def links '((Arad Zerind 75)
 	     (Arad Sibiu 140)
@@ -34,7 +34,7 @@
 		   (lambda (a b c)
 		     (citylink b a c))) links)))
 
-(def (links-for city)
+(def (links-for #(symbol? city))
      (filter (lambda (cl)
 	       (eq? city (.from cl)))
 	     links*))
@@ -62,13 +62,16 @@
 			 (list (citylink start start 0)))))
 
      (let loop ()
-       (if (null? frontier)
+       (step)
+       (if (null? (unbox frontier))
 	   'FAIL
 	   (let* ((path (remove-choice! frontier))
 		  (s (first path)))
 	     (if (eq? (.to s) end)
 		 path
-		 (for-each (lambda (a)
-			     (add! (cons a path) frontier))
-			   (links-for s)))))))
+		 (begin
+		   (for-each (lambda (a)
+			       (add! (cons a path) frontier))
+			     (links-for (.to s)))
+		   (loop)))))))
 
