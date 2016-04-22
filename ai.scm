@@ -28,22 +28,18 @@
 	     (Vaslui Iasi 92)
 	     (Iasi Neamt 87)))
 
+(def l1 (map (applying citylink) links))
+(def l2 (map (applying
+	      (lambda (a b c)
+		(citylink b a c))) links))
 (def links*
-     (append (map (applying citylink) links)
-	     (map (applying
-		   (lambda (a b c)
-		     (citylink b a c))) links)))
+     (append l1 l2))
 
 (def (links-for #(symbol? city))
      (filter (lambda (cl)
-	       (eq? city (.from cl)))
+	       (eq? (.from cl) city))
 	     links*))
 
-
-;; (def start 'Arad)
-;; (def end 'Bucharest)
-
-;; paths
 
 (def (remove-choice! frontier)
      (let ((l (unbox frontier)))
@@ -62,7 +58,7 @@
 			 (list (citylink start start 0)))))
 
      (let loop ()
-       (step)
+       ;;(step)
        (if (null? (unbox frontier))
 	   'FAIL
 	   (let* ((path (remove-choice! frontier))
