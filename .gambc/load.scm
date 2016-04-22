@@ -92,3 +92,5 @@
 
 (define /load i/load)
 
+(/load "ai")
+
