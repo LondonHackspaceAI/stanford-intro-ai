@@ -44,7 +44,7 @@
 
 (def (remove-choice! frontier)
      (let ((l (unbox frontier)))
-       (set-box! frontier (cdr l))
+       (set-box! frontier (rest l))
        (first l)))
 
 (def (add! path frontier)
