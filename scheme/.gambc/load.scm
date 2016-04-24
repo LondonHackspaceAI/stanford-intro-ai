@@ -79,6 +79,7 @@
   (c/load "lib/cj-string-flatten")
   (c/load "lib/cj-c-util")
   (c/load "lib/posix/cj-c-errno_Cpart")
+  (c/load "lib/cj-ffi")
   (c/load "lib/posix/cj-c-errno")
   (c/load "lib/posix/cj-posix")
   (i/load "lib/cj-io-util")
