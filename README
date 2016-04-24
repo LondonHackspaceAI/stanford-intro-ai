@@ -1,0 +1,12 @@
+This requires the Gambit-C Scheme system, version 4.5.3 (perhaps other
+versions will work, too, but then quite likely not.)
+
+This code has only been tested on Debian Linux.
+
+To run:
+
+   git submodule init
+   git submodule update
+
+   gsc -:tE,dar,t8,f8,-8
+
