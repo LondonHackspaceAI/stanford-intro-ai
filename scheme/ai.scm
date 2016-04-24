@@ -1,8 +1,9 @@
-(require easy)
+(require easy
+	 (predicates nonnegative-real?))
 
 (class citylink (struct #(symbol? from)
 			#(symbol? to)
-			#(real? distance)))
+			#(nonnegative-real? distance)))
 
 (def links '((Arad Zerind 75)
 	     (Arad Sibiu 140)
