@@ -2,10 +2,14 @@
 	 typed-list
 	 (predicates nonnegative-real?))
 
+
+;; we use symbols to represent cities
+(def city? symbol?)
+
 ;; a citylink is a path segment between two cities
 (class citylink
-       (struct #(symbol? from)
-	       #(symbol? to)
+       (struct #(city? from)
+	       #(city? to)
 	       #(nonnegative-real? distance)))
 
 ;; a path is a list of citylinks; define an object holding it
@@ -58,7 +62,7 @@
 (def links* (append l1 l2))
 
 ;; all links away from a given city:
-(def (links-for #(symbol? city))
+(def (links-for #(city? city))
      (filter (lambda (cl)
 	       (eq? (.from cl) city))
 	     links*))
@@ -79,8 +83,8 @@
        (set-box! frontier (cons path l))))
 
 
-(def (treesearch #(symbol? start)
-		 #(symbol? end))
+(def (treesearch #(city? start)
+		 #(city? end))
 
      (def frontier (box (list
 			 (path (citylink start start 0)))))
