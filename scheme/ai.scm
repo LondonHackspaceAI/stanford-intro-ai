@@ -2,10 +2,28 @@
 	 typed-list
 	 (predicates nonnegative-real?))
 
-(class citylink (struct #(symbol? from)
-			#(symbol? to)
-			#(nonnegative-real? distance)))
+;; a citylink is a path segment between two cities
+(class citylink
+       (struct #(symbol? from)
+	       #(symbol? to)
+	       #(nonnegative-real? distance)))
 
+;; a path is a list of citylinks; define an object holding it
+(class path
+       (struct constructor-name: _path
+	       #((typed-list-of citylink?) links))
+       ;; n-ary custom constructor function that takes the links
+       ;; making up a path:
+       (def (path . links)
+	    (_path (list.typed-list citylink? links)))
+       (method (add p link)
+	       (_path (.cons (.links p) link)))
+       ;; "first" link when looking backwards:
+       (method (first p)
+	       (.first (.links p))))
+
+
+;; to safe typing effort, enter values as a list of bare lists:
 (def links '((Arad Zerind 75)
 	     (Arad Sibiu 140)
 	     (Arad Timisoara 118)
@@ -30,32 +48,27 @@
 	     (Vaslui Iasi 92)
 	     (Iasi Neamt 87)))
 
+;; turn the bare lists into citylink objects:
 (def l1 (map (applying citylink) links))
+;; and again with from and to fields reversed:
 (def l2 (map (applying
 	      (lambda (a b c)
 		(citylink b a c))) links))
-(def links*
-     (append l1 l2))
 
+(def links* (append l1 l2))
+
+;; all links away from a given city:
 (def (links-for #(symbol? city))
      (filter (lambda (cl)
 	       (eq? (.from cl) city))
 	     links*))
 
 
-;; a path is a list of citylinks; define an object holding it
-(class path
-       (struct constructor-name: _path
-	       #((typed-list-of citylink?) links))
-       (def (path . links)
-	    (_path (list.typed-list citylink? links)))
-       (method (add p link)
-	       (_path (.cons (.links p) link)))
-       (method (first p)
-	       (.first (.links p))))
+;; The frontier is a boxed list of paths (boxing is necessary to allow
+;; for mutation--the used data structures are immutable);
 
-
-
+;; remove-choice!  choses one of the paths, removes it from the
+;; frontier and returns it
 (def (remove-choice! frontier)
      (let ((l (unbox frontier)))
        (set-box! frontier (rest l))
@@ -64,6 +77,7 @@
 (def (add! path frontier)
      (let ((l (unbox frontier)))
        (set-box! frontier (cons path l))))
+
 
 (def (treesearch #(symbol? start)
 		 #(symbol? end))
