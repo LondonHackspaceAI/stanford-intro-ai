@@ -64,6 +64,8 @@
 (c/load "lib/oo-util")
 (c/load "lib/more-oo")
 (c/load "lib/easy")
+(c/load "lib/cj-gambit-sys")
+(i/load "lib/typed-list")
 
 (define (load-require)
   (i/load "lib/Maybe")

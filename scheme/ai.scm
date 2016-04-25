@@ -1,4 +1,5 @@
 (require easy
+	 typed-list
 	 (predicates nonnegative-real?))
 
 (class citylink (struct #(symbol? from)
@@ -42,6 +43,19 @@
 	     links*))
 
 
+;; a path is a list of citylinks; define an object holding it
+(class path
+       (struct constructor-name: _path
+	       #((typed-list-of citylink?) links))
+       (def (path . links)
+	    (_path (list.typed-list citylink? links)))
+       (method (add p link)
+	       (_path (.cons (.links p) link)))
+       (method (first p)
+	       (.first (.links p))))
+
+
+
 (def (remove-choice! frontier)
      (let ((l (unbox frontier)))
        (set-box! frontier (rest l))
@@ -55,20 +69,19 @@
 		 #(symbol? end))
 
      (def frontier (box (list
-			 ;; path:
-			 (list (citylink start start 0)))))
+			 (path (citylink start start 0)))))
 
      (let loop ()
        ;;(step)
        (if (null? (unbox frontier))
 	   'FAIL
 	   (let* ((path (remove-choice! frontier))
-		  (s (first path)))
+		  (s (.first path)))
 	     (if (eq? (.to s) end)
 		 path
 		 (begin
 		   (for-each (lambda (a)
-			       (add! (cons a path) frontier))
+			       (add! (.add path a) frontier))
 			     (links-for (.to s)))
 		   (loop)))))))
 
