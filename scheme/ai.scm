@@ -98,8 +98,6 @@
      (def frontier (box (list
 			 (path (citylink start start 0)))))
 
-     (def seen (make-table))
-
      (let loop ()
        ;;(step)
        (if (null? (unbox frontier))
@@ -111,13 +109,7 @@
 		 path
 		 (begin
 		   (println city)
-		   (for-each
-		    (lambda (a)
-		      (def to (.to a))
-		      (if (table-ref seen to #f)
-			  (println "already passed: " to)
-			  (begin
-			    (table-set! seen to #t)
-			    (add! (.add path a) frontier))))
-		    (links-for city))
+		   (for-each (lambda (a)
+			       (add! (.add path a) frontier))
+			     (links-for city))
 		   (loop)))))))
