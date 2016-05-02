@@ -87,6 +87,7 @@
        (first l)))
 
 (def (add! path frontier)
+     (println "adding: " (.to (.first path)))
      (let ((l (unbox frontier)))
        (set-box! frontier (cons path l))))
 
