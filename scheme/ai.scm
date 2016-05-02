@@ -24,7 +24,10 @@
 	       (_path (.cons (.links p) link)))
        ;; "first" link when looking backwards:
        (method (first p)
-	       (.first (.links p))))
+	       (.first (.links p)))
+       (method (show p)
+	       (cons (.to (.first (.links p)))
+		     (map .from (reverse (cdr (reverse (.list (.links p)))))))))
 
 
 ;; to safe typing effort, enter values as a list of bare lists:
@@ -105,4 +108,3 @@
 			       (add! (.add path a) frontier))
 			     (links-for city))
 		   (loop)))))))
-
