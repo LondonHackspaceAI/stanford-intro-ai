@@ -68,8 +68,9 @@
 	     links*))
 
 
-;; The frontier is a boxed list of paths (boxing is necessary to allow
-;; for mutation--the used data structures are immutable);
+;; The "frontier" (as called in the video) is a boxed list of paths
+;; (boxing is necessary to allow for mutation--the used data
+;; structures are immutable). It's the set of paths already taken.
 
 ;; remove-choice!  choses one of the paths, removes it from the
 ;; frontier and returns it
