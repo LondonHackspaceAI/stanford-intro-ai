@@ -75,8 +75,8 @@
 ;; remove-choice!  choses one of the paths, removes it from the
 ;; frontier and returns it
 (def (remove-choice! frontier)
-     (let ((l (unbox frontier)))
-       (set-box! frontier (rest l))
+     (let ((l (reverse (unbox frontier))))
+       (set-box! frontier (reverse (rest l)))
        (first l)))
 
 (def (add! path frontier)
