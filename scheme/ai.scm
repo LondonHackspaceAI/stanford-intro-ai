@@ -15,13 +15,16 @@
 ;; a path is a list of citylinks; define an object holding it
 (class path
        (struct constructor-name: _path
-	       #((typed-list-of citylink?) links))
+	       #((typed-list-of citylink?) links)
+	       #(nonnegative-real? total-distance))
        ;; n-ary custom constructor function that takes the links
        ;; making up a path:
        (def (path . links)
-	    (_path (list.typed-list citylink? links)))
+	    (_path (list.typed-list citylink? links)
+		   (fold + 0 (map .distance links))))
        (method (add p link)
-	       (_path (.cons (.links p) link)))
+	       (_path (.cons (.links p) link)
+		      (+ (.total-distance p) (.distance link))))
        ;; "first" link when looking backwards:
        (method (first p)
 	       (.first (.links p))))
