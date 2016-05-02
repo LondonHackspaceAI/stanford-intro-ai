@@ -95,12 +95,14 @@
        (if (null? (unbox frontier))
 	   'FAIL
 	   (let* ((path (remove-choice! frontier))
-		  (s (.first path)))
-	     (if (eq? (.to s) end)
+		  (s (.first path))
+		  (city (.to s)))
+	     (if (eq? city end)
 		 path
 		 (begin
+		   (println city)
 		   (for-each (lambda (a)
 			       (add! (.add path a) frontier))
-			     (links-for (.to s)))
+			     (links-for city))
 		   (loop)))))))
 
