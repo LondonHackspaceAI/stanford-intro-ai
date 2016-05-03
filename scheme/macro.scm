@@ -2,7 +2,7 @@
 (defmacro (for params . body)
   (mcase params
 	 (`(`var `start `end)
-	  (let ((LP 'f)) ;; 
+	  (let ((LP (gensym 'f)))
 	    `(letrec
 		 ((,LP
 		   (lambda (,var)
