@@ -1,6 +1,7 @@
 (require easy
 	 typed-list
-	 (predicates nonnegative-real?))
+	 (predicates nonnegative-real? length->=)
+	 test)
 
 
 ;; we use symbols to represent cities
@@ -20,7 +21,7 @@
        ;; n-ary custom constructor function that takes the links
        ;; making up a path:
        (def (path . links)
-	    (_path (list.typed-list citylink? links)
+	    (_path (list.typed-list citylink? (reverse links))
 		   (fold + 0 (map .distance links))))
        (method (add p link)
 	       (_path (.cons (.links p) link)
@@ -31,10 +32,27 @@
        (method (show p)
 	       (list
 		(.total-distance p)
-		(reverse
-		 (cons (.to (.first (.links p)))
-		       (map .from
-			    (reverse (rest (reverse (.list (.links p)))))))))))
+		(let ((l (map .from
+			      (.reverse-list
+			       (.links p)
+			       ;; append fake link for end city to
+			       ;; make it show up:
+			       (let ((c (.to (.first (.links p)))))
+				 (list (citylink c c 0)))))))
+		  ;; if the first and second city are the same,
+		  ;; then that's because of the stupid initial
+		  ;; frontier value from treesearch; drop the
+		  ;; duplicate then.
+		  (if (and (length->= l 2)
+			   (eq? (first l) (second l)))
+		      (rest l)
+		      l)))))
+
+(TEST
+ > (.show (path (citylink 'A 'B 10)))
+ (10 (A B))
+ > (.show (path (citylink 'A 'B 10) (citylink 'B 'C 4.5)))
+ (14.5 (A B C)))
 
 
 ;; to safe typing effort, enter values as a list of bare lists:
