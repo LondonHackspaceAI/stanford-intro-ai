@@ -1,5 +1,5 @@
 (require easy
-	 ai)
+	 treesearch)
 
 (def. (number.julia-string s)
   (number->string s))

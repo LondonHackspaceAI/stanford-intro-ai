@@ -95,6 +95,7 @@
 
 (define /load i/load)
 
-(/load "ai")
+(/load "treesearch")
+(/load "main")
 (/load "to-julia")
 
