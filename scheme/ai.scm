@@ -134,7 +134,7 @@
      (def (links-for #(city? city))
 	  (filter (lambda (cl)
 		    (eq? (.from cl) city))
-		  links*))
+		  links))
 
      (def frontier (box (list
 			 (path (citylink start start 0)))))
