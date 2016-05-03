@@ -11,7 +11,14 @@
 (class citylink
        (struct #(city? from)
 	       #(city? to)
-	       #(nonnegative-real? distance)))
+	       #(nonnegative-real? distance))
+
+       ;; swap start and end
+       (method (reverse p)
+	       (citylink (.to p)
+			 (.from p)
+			 (.distance p))))
+
 
 ;; a path is a list of citylinks; define an object holding it
 (class path
@@ -59,39 +66,33 @@
  (14.5 (A B C)))
 
 
-;; to safe typing effort, enter values as a list of bare lists:
-(def links '((Arad Zerind 75)
-	     (Arad Sibiu 140)
-	     (Arad Timisoara 118)
-	     (Zerind Dradea 71)
-	     (Dradea Sibiu 151)
-	     (Sibiu Fagaras 99)
-	     (Sibiu RimnicuVilcea 80)
-	     (Fagaras Bucharest 211)
-	     (RimnicuVilcea Pitesti 97)
-	     (RimnicuVilcea Craiova 146)
-	     (Pitesti Craiova 138)
-	     (Pitesti Bucharest 101)
-	     (Timisoara Lugoj 111)
-	     (Lugoj Mehadia 70)
-	     (Mehadia Drobeta 75)
-	     (Drobeta Craiova 120)
-	     (Bucharest Giurgiu 90)
-	     (Bucharest Urziceni 85)
-	     (Urziceni Hirsova 98)
-	     (Hirsova Eforie 86)
-	     (Urziceni Vaslui 142)
-	     (Vaslui Iasi 92)
-	     (Iasi Neamt 87)))
-
-;; turn the bare lists into citylink objects:
-(def l1 (map (applying citylink) links))
-;; and again with from and to fields reversed:
-(def l2 (map (applying
-	      (lambda (a b c)
-		(citylink b a c))) links))
-
-(def links* (append l1 l2))
+;; to safe typing effort, enter values as a list of bare lists, then
+;; convert them to citylink objects
+(def links
+     (map (applying citylink)
+	  '((Arad Zerind 75)
+	    (Arad Sibiu 140)
+	    (Arad Timisoara 118)
+	    (Zerind Dradea 71)
+	    (Dradea Sibiu 151)
+	    (Sibiu Fagaras 99)
+	    (Sibiu RimnicuVilcea 80)
+	    (Fagaras Bucharest 211)
+	    (RimnicuVilcea Pitesti 97)
+	    (RimnicuVilcea Craiova 146)
+	    (Pitesti Craiova 138)
+	    (Pitesti Bucharest 101)
+	    (Timisoara Lugoj 111)
+	    (Lugoj Mehadia 70)
+	    (Mehadia Drobeta 75)
+	    (Drobeta Craiova 120)
+	    (Bucharest Giurgiu 90)
+	    (Bucharest Urziceni 85)
+	    (Urziceni Hirsova 98)
+	    (Hirsova Eforie 86)
+	    (Urziceni Vaslui 142)
+	    (Vaslui Iasi 92)
+	    (Iasi Neamt 87))))
 
 
 ;; The "frontier" (as called in the video) is a boxed list of paths
@@ -122,10 +123,13 @@
 
 
 
-(def (treesearch #((list-of citylink?) links*)
+(def (treesearch #((list-of citylink?) links)
 		 #(city? start)
 		 #(city? end))
 
+     (def links* (append links
+			 (map .reverse links)))
+     
      ;; all links away from a given city:
      (def (links-for #(city? city))
 	  (filter (lambda (cl)
@@ -153,6 +157,6 @@
 
 
 (TEST
- > (.show (treesearch links* 'Arad 'Bucharest))
+ > (.show (treesearch links 'Arad 'Bucharest))
  (418 (Arad Sibiu RimnicuVilcea Pitesti Bucharest)))
 
