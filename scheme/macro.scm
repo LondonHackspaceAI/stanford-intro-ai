@@ -12,3 +12,14 @@
 			   (,LP (inc ,var)))))))
 	       (,LP ,start))))))
 
+
+;; (define-syntax (for (i start end) ...)
+;;   (letrec
+;;       ((LP
+;; 	(lambda (var)
+;; 	  (if (< var end)
+;; 	      (begin
+;; 		...
+;; 		(LP (inc var)))))))
+;;     (LP start)))
+
