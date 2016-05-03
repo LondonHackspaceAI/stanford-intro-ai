@@ -107,6 +107,16 @@
      (let ((l (unbox frontier)))
        (set-box! frontier (cons path l))))
 
+(TEST
+ > (def f (box (list (path (citylink 'A 'B 3))
+		     (path (citylink 'A 'C 2))
+		     (path (citylink 'A 'D 2.5)))))
+ > (.show (remove-choice! f))
+ (2 (A C))
+ > (map .show (unbox f))
+ ((2.5 (A D)) (3 (A B))))
+
+
 
 (def (treesearch #((list-of citylink?) links*)
 		 #(city? start)
@@ -136,3 +146,9 @@
 			       (add! (.add path a) frontier))
 			     (links-for city))
 		   (loop)))))))
+
+
+(TEST
+ > (.show (treesearch links* 'Arad 'Bucharest))
+ (418 (Arad Sibiu RimnicuVilcea Pitesti Bucharest)))
+
