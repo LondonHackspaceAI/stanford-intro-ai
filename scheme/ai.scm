@@ -89,12 +89,6 @@
 
 (def links* (append l1 l2))
 
-;; all links away from a given city:
-(def (links-for #(city? city))
-     (filter (lambda (cl)
-	       (eq? (.from cl) city))
-	     links*))
-
 
 ;; The "frontier" (as called in the video) is a boxed list of paths
 ;; (boxing is necessary to allow for mutation--the used data
@@ -114,8 +108,15 @@
        (set-box! frontier (cons path l))))
 
 
-(def (treesearch #(city? start)
+(def (treesearch #((list-of citylink?) links*)
+		 #(city? start)
 		 #(city? end))
+
+     ;; all links away from a given city:
+     (def (links-for #(city? city))
+	  (filter (lambda (cl)
+		    (eq? (.from cl) city))
+		  links*))
 
      (def frontier (box (list
 			 (path (citylink start start 0)))))
