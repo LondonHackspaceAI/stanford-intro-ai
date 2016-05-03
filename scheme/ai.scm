@@ -1,7 +1,8 @@
 (require easy
 	 typed-list
 	 (predicates nonnegative-real? length->=)
-	 test)
+	 test
+	 macro)
 
 
 ;; we use symbols to represent cities
@@ -136,3 +137,9 @@
 			       (add! (.add path a) frontier))
 			     (links-for city))
 		   (loop)))))))
+
+
+(def (macroexample start end)
+     (for (i start end)
+	  (println "i=" i)))
+

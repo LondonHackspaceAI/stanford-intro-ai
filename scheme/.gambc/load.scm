@@ -95,6 +95,7 @@
 
 (define /load i/load)
 
+(/load "macro")
 (/load "ai")
 (/load "to-julia")
 
