@@ -143,3 +143,7 @@
      (for (i start end)
 	  (println "i=" i)))
 
+;; but wouldn't work for:
+;; (for (f 10 15)
+;;      (println "i=" f))
+
