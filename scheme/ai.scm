@@ -29,8 +29,12 @@
        (method (first p)
 	       (.first (.links p)))
        (method (show p)
-	       (cons (.to (.first (.links p)))
-		     (map .from (reverse (cdr (reverse (.list (.links p)))))))))
+	       (list
+		(.total-distance p)
+		(reverse
+		 (cons (.to (.first (.links p)))
+		       (map .from
+			    (reverse (rest (reverse (.list (.links p)))))))))))
 
 
 ;; to safe typing effort, enter values as a list of bare lists:
