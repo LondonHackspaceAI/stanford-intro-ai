@@ -158,5 +158,7 @@
 
 (TEST
  > (.show (treesearch links 'Arad 'Bucharest))
- (418 (Arad Sibiu RimnicuVilcea Pitesti Bucharest)))
+ (418 (Arad Sibiu RimnicuVilcea Pitesti Bucharest))
+ > (.show (treesearch links 'Bucharest 'Arad))
+ (418 (Bucharest Pitesti RimnicuVilcea Sibiu Arad)))
 
