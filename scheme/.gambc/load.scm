@@ -68,6 +68,13 @@
 (i/load "lib/typed-list")
 (c/load "lib/cj-seen")
 
+(define /load i/load)
+
+(/load "treesearch")
+(/load "main")
+(/load "to-julia")
+
+
 (define (load-require)
   (i/load "lib/Maybe")
   (i/load "lib/alist")
@@ -92,10 +99,4 @@
   (i/load "lib/require")
   (i/load "lib/require-util")
   (c/load "lib/failing"))
-
-(define /load i/load)
-
-(/load "treesearch")
-(/load "main")
-(/load "to-julia")
 
