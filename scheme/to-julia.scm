@@ -20,9 +20,9 @@
 		       (.julia-string distance)
 		       ")")))
 
-(def (links->julia)
+(def (links->julia links)
      (string-append "a = ["
-		    (strings-join (map .julia-string l1)
+		    (strings-join (map .julia-string links)
 				  ",\n     ")
 		    "];"))
 
