@@ -46,7 +46,7 @@
        (method (first p)
 	       (.first (.links p)))
 
-       (method (show p)
+       (method (view p)
 	       (list
 		(.total-distance p)
 		(let ((l (map .from
@@ -66,9 +66,9 @@
 		      l)))))
 
 (TEST
- > (.show (path (citylink 'A 'B 10)))
+ > (.view (path (citylink 'A 'B 10)))
  (10 (A B))
- > (.show (path (citylink 'A 'B 10) (citylink 'B 'C 4.5)))
+ > (.view (path (citylink 'A 'B 10) (citylink 'B 'C 4.5)))
  (14.5 (A B C)))
 
 
@@ -93,14 +93,14 @@
  > (def f (box (list (path (citylink 'A 'B 3))
 		     (path (citylink 'A 'C 2))
 		     (path (citylink 'A 'D 2.5)))))
- > (.show (remove-choice! f))
+ > (.view (remove-choice! f))
  (2 (A C))
- > (map .show (unbox f))
+ > (map .view (unbox f))
  ((2.5 (A D)) (3 (A B))))
 
 
-(def. (symbol.show v)
-  (list 'quote v))
+(def. (symbol.view v)
+  v)
 
 
 
@@ -141,7 +141,7 @@
 			 (loop))))))))
 
 
-(def treesearch* (comp .show treesearch))
+(def treesearch* (comp .view treesearch))
 
 
 (def (lists.citylinks l)
@@ -153,15 +153,15 @@
 
 (TEST
  > (treesearch** '() 'A 'B)
- 'FAIL
+ FAIL
  > (treesearch** '((A C 3)) 'A 'B)
- 'FAIL ;; looped before seen check
+ FAIL ;; looped before seen check
  > (treesearch** '((C B 3)) 'A 'B)
- 'FAIL
+ FAIL
  > (treesearch** '((X Y 3)) 'A 'B)
- 'FAIL
+ FAIL
  > (treesearch** '((A A 3)) 'A 'B)
- 'FAIL ;; looped before seen check
+ FAIL ;; looped before seen check
  > (treesearch** '((A B 3)) 'A 'B)
  (3 (A B))
  > (treesearch** '((B A 3)) 'A 'B)
