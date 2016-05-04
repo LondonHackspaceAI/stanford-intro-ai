@@ -20,9 +20,9 @@ With nicer view of the resulting path:
 
     > (treesearch* links* 'Arad 'Bucharest)
 
-To only run the tests in ai.scm:
+To only run the tests in treesearch.scm:
 
-    > (run-tests "ai")
+    > (run-tests "treesearch")
 
 To run all the tests:
 
