@@ -132,3 +132,6 @@
 
 ;; (see test(s) in main.scm)
 
+(def (lists.citylinks l)
+     (map (applying citylink) l))
+
