@@ -98,6 +98,10 @@
  ((2.5 (A D)) (3 (A B))))
 
 
+(def. (symbol.show v)
+  (list 'quote v))
+
+
 
 (def (treesearch #((list-of citylink?) links)
 		 #(city? start)
@@ -135,8 +139,75 @@
 (def treesearch* (comp .show treesearch))
 
 
-;; (see test(s) in main.scm)
-
 (def (lists.citylinks l)
      (map (applying citylink) l))
 
+
+(def (treesearch** ls a b)
+     (treesearch* (lists.citylinks ls) a b))
+
+(TEST
+ > (treesearch** '() 'A 'B)
+ 'FAIL
+ ;; > (treesearch** '((A C 3)) 'A 'B)
+ ;; 'FAIL ;; XXX loops!!
+ > (treesearch** '((C B 3)) 'A 'B)
+ 'FAIL
+ > (treesearch** '((X Y 3)) 'A 'B)
+ 'FAIL
+ ;; > (treesearch** '((A A 3)) 'A 'B)
+ ;; 'FAIL ;; XXX loops!
+ > (treesearch** '((A B 3)) 'A 'B)
+ (3 (A B))
+ > (treesearch** '((B A 3)) 'A 'B)
+ (3 (A B))
+
+ ;; multiple direct paths
+ > (treesearch** '((B A 3) (B A 2)) 'A 'B)
+ (2 (A B))
+ > (treesearch** '((B A 3) (A B 2)) 'A 'B)
+ (2 (A B))
+ > (treesearch** '((A B 3) (B A 2)) 'A 'B)
+ (2 (A B))
+ > (treesearch** '((A B 3) (A B 2)) 'A 'B)
+ (2 (A B))
+
+ ;; unused paths
+ > (treesearch** '((A B 3) (B C 2)) 'A 'B)
+ (3 (A B))
+ > (treesearch** '((A B 3) (B C 2)) 'B 'A)
+ (3 (B A))
+
+ ;; multi-segment
+ > (treesearch** '((A B 3) (B C 2)) 'A 'C)
+ (5 (A B C))
+ > (treesearch** '((A B 3) (B C 2)) 'C 'A)
+ (5 (C B A))
+
+ ;; with alternatives: same length
+ > (treesearch** '((A B 3) (B C 2) (A C 5)) 'A 'C)
+ (5 (A B C))
+ > (treesearch** '((A B 3) (B C 2) (A C 5)) 'C 'A)
+ (5 (C B A))
+
+ > (treesearch** '((A C 5) (A B 3) (B C 2)) 'A 'C)
+ (5 (A B C)) ;; it prefers to take the shorter path first. right?
+
+ ;; with alternative of shorter length
+ > (treesearch** '((A C 4) (A B 3) (B C 2)) 'A 'C)
+ (4 (A C))
+ > (treesearch** '((A C 4) (A B 3) (B C 2)) 'C 'A)
+ (4 (C A))
+
+ ;; Now for all of these (that already have them): add random
+ ;; unrelated, or singly connected, or even cross connected between
+ ;; them, links that only link (directly or indirectly?) to the source
+ ;; or target city (i.e. only link to one of the two, except for the
+ ;; existing links I set out above).  TODO.
+
+ ;; Also, add longer multi-segment paths (more segments, as well as
+ ;; longer distances).
+ )
+
+
+;; (also see test(s) in main.scm)
