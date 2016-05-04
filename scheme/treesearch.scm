@@ -5,7 +5,7 @@
 	 cj-seen)
 
 (defmacro (IF-DEBUG arg)
-  (if #f
+  (if #t
       arg
       `(void)))
 
