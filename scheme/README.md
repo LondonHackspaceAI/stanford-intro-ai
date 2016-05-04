@@ -18,7 +18,7 @@ To run a search:
 
 With nicer view of the resulting path:
 
-    > (.show (treesearch links* 'Arad 'Bucharest))
+    > (treesearch* links* 'Arad 'Bucharest)
 
 To only run the tests in ai.scm:
 

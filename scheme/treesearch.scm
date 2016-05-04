@@ -126,5 +126,9 @@
 			     (links-for city))
 		   (loop)))))))
 
+
+(def treesearch* (comp .show treesearch))
+
+
 ;; (see test(s) in main.scm)
 
