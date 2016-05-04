@@ -1,0 +1,70 @@
+> (run-tests "main")
+Testing file main.scm
+TEST form no. 0
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Zerind
+adding: Dradea
+Timisoara
+adding: Lugoj
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Dradea
+Dradea
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+Lugoj
+adding: Mehadia
+Fagaras
+adding: Bucharest
+Dradea
+Mehadia
+adding: Drobeta
+Pitesti
+adding: Craiova
+adding: Bucharest
+Craiova
+adding: Drobeta
+Drobeta
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Urziceni
+adding: Hirsova
+adding: Vaslui
+Giurgiu
+Pitesti
+adding: Craiova
+adding: RimnicuVilcea
+Hirsova
+adding: Eforie
+RimnicuVilcea
+adding: Craiova
+adding: Sibiu
+Fagaras
+adding: Sibiu
+Vaslui
+adding: Iasi
+Craiova
+adding: Drobeta
+Eforie
+Sibiu
+adding: Arad
+adding: Dradea
+Sibiu
+adding: Arad
+adding: Dradea
+Iasi
+adding: Neamt
+Craiova
+adding: Drobeta
+Drobeta
+adding: Mehadia
+Neamt
+2 success(es), 0 failure(s)

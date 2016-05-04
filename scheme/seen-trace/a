@@ -1,0 +1,431 @@
+> (run-tests "main")
+Testing file main.scm
+TEST form no. 0
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Zerind
+adding: Dradea
+adding: Arad
+Timisoara
+adding: Lugoj
+adding: Arad
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Arad
+adding: Dradea
+Dradea
+adding: Sibiu
+adding: Zerind
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Zerind
+adding: Dradea
+adding: Arad
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Zerind
+adding: Dradea
+adding: Arad
+Lugoj
+adding: Mehadia
+adding: Timisoara
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Fagaras
+adding: Bucharest
+adding: Sibiu
+Timisoara
+adding: Lugoj
+adding: Arad
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Dradea
+adding: Sibiu
+adding: Zerind
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Arad
+adding: Dradea
+Dradea
+adding: Sibiu
+adding: Zerind
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Dradea
+adding: Sibiu
+adding: Zerind
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Arad
+adding: Dradea
+Mehadia
+adding: Drobeta
+adding: Lugoj
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Arad
+adding: Dradea
+Zerind
+adding: Dradea
+adding: Arad
+Pitesti
+adding: Craiova
+adding: Bucharest
+adding: RimnicuVilcea
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Arad
+adding: Dradea
+Timisoara
+adding: Lugoj
+adding: Arad
+Timisoara
+adding: Lugoj
+adding: Arad
+Zerind
+adding: Dradea
+adding: Arad
+Zerind
+adding: Dradea
+adding: Arad
+Zerind
+adding: Dradea
+adding: Arad
+Craiova
+adding: RimnicuVilcea
+adding: Pitesti
+adding: Drobeta
+Zerind
+adding: Dradea
+adding: Arad
+Zerind
+adding: Dradea
+adding: Arad
+Lugoj
+adding: Mehadia
+adding: Timisoara
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Drobeta
+adding: Craiova
+adding: Mehadia
+Zerind
+adding: Dradea
+adding: Arad
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Arad
+adding: Dradea
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Lugoj
+adding: Mehadia
+adding: Timisoara
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Dradea
+adding: Sibiu
+adding: Zerind
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Arad
+adding: Zerind
+adding: Sibiu
+adding: Timisoara
+Fagaras
+adding: Bucharest
+adding: Sibiu
+Fagaras
+adding: Bucharest
+adding: Sibiu
+Timisoara
+adding: Lugoj
+adding: Arad
+Fagaras
+adding: Bucharest
+adding: Sibiu
+Timisoara
+adding: Lugoj
+adding: Arad
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Urziceni
+adding: Hirsova
+adding: Vaslui
+adding: Bucharest
+Giurgiu
+adding: Bucharest
+Pitesti
+adding: Craiova
+adding: Bucharest
+adding: RimnicuVilcea
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Hirsova
+adding: Eforie
+adding: Urziceni
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Fagaras
+adding: Bucharest
+adding: Sibiu
+Vaslui
+adding: Iasi
+adding: Urziceni
+Craiova
+adding: RimnicuVilcea
+adding: Pitesti
+adding: Drobeta
+Urziceni
+adding: Hirsova
+adding: Vaslui
+adding: Bucharest
+Giurgiu
+adding: Bucharest
+Urziceni
+adding: Hirsova
+adding: Vaslui
+adding: Bucharest
+Eforie
+adding: Hirsova
+Giurgiu
+adding: Bucharest
+Pitesti
+adding: Craiova
+adding: Bucharest
+adding: RimnicuVilcea
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Arad
+adding: Dradea
+Urziceni
+adding: Hirsova
+adding: Vaslui
+adding: Bucharest
+Pitesti
+adding: Craiova
+adding: Bucharest
+adding: RimnicuVilcea
+Urziceni
+adding: Hirsova
+adding: Vaslui
+adding: Bucharest
+Giurgiu
+adding: Bucharest
+Pitesti
+adding: Craiova
+adding: Bucharest
+adding: RimnicuVilcea
+Pitesti
+adding: Craiova
+adding: Bucharest
+adding: RimnicuVilcea
+Sibiu
+adding: Fagaras
+adding: RimnicuVilcea
+adding: Arad
+adding: Dradea
+Iasi
+adding: Neamt
+adding: Vaslui
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Craiova
+adding: RimnicuVilcea
+adding: Pitesti
+adding: Drobeta
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Hirsova
+adding: Eforie
+adding: Urziceni
+Hirsova
+adding: Eforie
+adding: Urziceni
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Drobeta
+adding: Craiova
+adding: Mehadia
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Hirsova
+adding: Eforie
+adding: Urziceni
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Urziceni
+adding: Hirsova
+adding: Vaslui
+adding: Bucharest
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Fagaras
+adding: Bucharest
+adding: Sibiu
+Pitesti
+adding: Craiova
+adding: Bucharest
+adding: RimnicuVilcea
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Hirsova
+adding: Eforie
+adding: Urziceni
+Fagaras
+adding: Bucharest
+adding: Sibiu
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Hirsova
+adding: Eforie
+adding: Urziceni
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Fagaras
+adding: Bucharest
+adding: Sibiu
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Vaslui
+adding: Iasi
+adding: Urziceni
+RimnicuVilcea
+adding: Pitesti
+adding: Craiova
+adding: Sibiu
+Bucharest
+adding: Giurgiu
+adding: Urziceni
+adding: Fagaras
+adding: Pitesti
+Neamt
+adding: Iasi
+Vaslui
+adding: Iasi
+adding: Urziceni
+Fagaras
+adding: Bucharest
+adding: Sibiu
+Craiova
+adding: RimnicuVilcea
+adding: Pitesti
+adding: Drobeta
+Vaslui
+adding: Iasi
+adding: Urziceni
+Fagaras
+adding: Bucharest
+adding: Sibiu
+2 success(es), 0 failure(s)
