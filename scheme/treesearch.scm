@@ -1,7 +1,8 @@
 (require easy
 	 typed-list
 	 (predicates nonnegative-real? length->=)
-	 test)
+	 test
+	 cj-seen)
 
 (defmacro (IF-DEBUG arg)
   (if #f
@@ -119,6 +120,8 @@
      (def frontier (box (list
 			 (path (citylink start start 0)))))
 
+     (def seen?! (make-seen?!))
+
      (let loop ()
        ;;(step)
        (if (null? (unbox frontier))
@@ -131,7 +134,8 @@
 		 (begin
 		   (IF-DEBUG (println city))
 		   (for-each (lambda (a)
-			       (add! (.add path a) frontier))
+			       (unless (seen?! (.to a))
+				       (add! (.add path a) frontier)))
 			     (links-for city))
 		   (loop)))))))
 

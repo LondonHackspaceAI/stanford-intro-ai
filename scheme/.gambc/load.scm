@@ -66,6 +66,7 @@
 (c/load "lib/easy")
 (c/load "lib/cj-gambit-sys")
 (i/load "lib/typed-list")
+(c/load "lib/cj-seen")
 
 (define (load-require)
   (i/load "lib/Maybe")
@@ -87,7 +88,6 @@
   (i/load "lib/cj-io-util")
   (i/load "lib/Status")
   (i/load "lib/tree-util")
-  (i/load "lib/cj-seen")
   (i/load "lib/tsort")
   (i/load "lib/require")
   (i/load "lib/require-util")
