@@ -120,24 +120,25 @@
      (def frontier (box (list
 			 (path (citylink start start 0)))))
 
-     (def seen?! (make-seen?!))
+     (letv ((visited? visited!) (make-seen?+!))
 
-     (let loop ()
-       ;;(step)
-       (if (null? (unbox frontier))
-	   'FAIL
-	   (let* ((path (remove-choice! frontier))
-		  (s (.first path))
-		  (city (.to s)))
-	     (if (eq? city end)
-		 path
-		 (begin
-		   (IF-DEBUG (println city))
-		   (for-each (lambda (a)
-			       (unless (seen?! (.to a))
-				       (add! (.add path a) frontier)))
-			     (links-for city))
-		   (loop)))))))
+	   (let loop ()
+	     ;;(step)
+	     (if (null? (unbox frontier))
+		 'FAIL
+		 (let* ((path (remove-choice! frontier))
+			(s (.first path))
+			(city (.to s)))
+		   (visited! city)
+		   (if (eq? city end)
+		       path
+		       (begin
+			 (IF-DEBUG (println city))
+			 (for-each (lambda (a)
+				     (unless (visited? (.to a))
+					     (add! (.add path a) frontier)))
+				   (links-for city))
+			 (loop))))))))
 
 
 (def treesearch* (comp .show treesearch))
@@ -153,14 +154,14 @@
 (TEST
  > (treesearch** '() 'A 'B)
  'FAIL
- ;; > (treesearch** '((A C 3)) 'A 'B)
- ;; 'FAIL ;; XXX loops!!
+ > (treesearch** '((A C 3)) 'A 'B)
+ 'FAIL ;; looped before seen check
  > (treesearch** '((C B 3)) 'A 'B)
  'FAIL
  > (treesearch** '((X Y 3)) 'A 'B)
  'FAIL
- ;; > (treesearch** '((A A 3)) 'A 'B)
- ;; 'FAIL ;; XXX loops!
+ > (treesearch** '((A A 3)) 'A 'B)
+ 'FAIL ;; looped before seen check
  > (treesearch** '((A B 3)) 'A 'B)
  (3 (A B))
  > (treesearch** '((B A 3)) 'A 'B)
