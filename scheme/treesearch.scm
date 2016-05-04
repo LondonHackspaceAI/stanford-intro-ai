@@ -1,8 +1,9 @@
 (require easy
 	 typed-list
-	 (predicates nonnegative-real? length->=)
+	 (predicates nonnegative-real? length->= box-of)
 	 test
-	 cj-seen)
+	 cj-seen
+	 wbcollection)
 
 (defmacro (IF-DEBUG arg)
   (if #t
@@ -63,7 +64,10 @@
 		  (if (and (length->= l 2)
 			   (eq? (first l) (second l)))
 		      (rest l)
-		      l)))))
+		      l))))
+
+       ;; compare two paths, returning lt eq gt
+       (method cmp (on .total-distance number-cmp)))
 
 (TEST
  > (.view (path (citylink 'A 'B 10)))
@@ -76,26 +80,30 @@
 ;; (boxing is necessary to allow for mutation--the used data
 ;; structures are immutable). It's the set of paths already taken.
 
+(def frontier? (box-of wbcollection?))
+
+(def (frontier . paths)
+     (box (list.wbcollection .cmp paths)))
+
 ;; remove-choice!  choses one of the paths, removes it from the
 ;; frontier and returns it
-(def (remove-choice! frontier)
-     (let ((l (sort (unbox frontier)
-		    (on .total-distance <))))
-       (set-box! frontier (rest l))
-       (first l)))
+(def (remove-choice! #(frontier? frontier))
+     (letv ((min rest) (.min&rest (unbox frontier)))
+	   (set-box! frontier rest)
+	   min))
 
-(def (add! path frontier)
+(def (add! path #(frontier? frontier))
      (IF-DEBUG (println "adding: " (.to (.first path))))
-     (let ((l (unbox frontier)))
-       (set-box! frontier (cons path l))))
+     (set-box! frontier
+	       (.add (unbox frontier) path)))
 
 (TEST
- > (def f (box (list (path (citylink 'A 'B 3))
-		     (path (citylink 'A 'C 2))
-		     (path (citylink 'A 'D 2.5)))))
+ > (def f (frontier (path (citylink 'A 'B 3))
+		    (path (citylink 'A 'C 2))
+		    (path (citylink 'A 'D 2.5))))
  > (.view (remove-choice! f))
  (2 (A C))
- > (map .view (unbox f))
+ > (map .view (.list (unbox f)))
  ((2.5 (A D)) (3 (A B))))
 
 
@@ -117,28 +125,26 @@
 		    (eq? (.from cl) city))
 		  links*))
 
-     (def frontier (box (list
-			 (path (citylink start start 0)))))
+     (let ((frontier (frontier (path (citylink start start 0)))))
+       (letv ((visited? visited!) (make-seen?+!))
 
-     (letv ((visited? visited!) (make-seen?+!))
-
-	   (let loop ()
-	     ;;(step)
-	     (if (null? (unbox frontier))
-		 'FAIL
-		 (let* ((path (remove-choice! frontier))
-			(s (.first path))
-			(city (.to s)))
-		   (visited! city)
-		   (if (eq? city end)
-		       path
-		       (begin
-			 (IF-DEBUG (println city))
-			 (for-each (lambda (a)
-				     (unless (visited? (.to a))
-					     (add! (.add path a) frontier)))
-				   (links-for city))
-			 (loop))))))))
+	     (let loop ()
+	       ;;(step)
+	       (if (.empty? (unbox frontier))
+		   'FAIL
+		   (let* ((path (remove-choice! frontier))
+			  (s (.first path))
+			  (city (.to s)))
+		     (visited! city)
+		     (if (eq? city end)
+			 path
+			 (begin
+			   (IF-DEBUG (println city))
+			   (for-each (lambda (a)
+				       (unless (visited? (.to a))
+					       (add! (.add path a) frontier)))
+				     (links-for city))
+			   (loop)))))))))
 
 
 (def treesearch* (comp .view treesearch))
