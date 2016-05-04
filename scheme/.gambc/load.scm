@@ -67,6 +67,9 @@
 (c/load "lib/cj-gambit-sys")
 (i/load "lib/typed-list")
 (c/load "lib/cj-seen")
+(c/load "lib/wbtree")
+(i/load "lib/wbtree-test") ;;
+(c/load "lib/wbcollection")
 
 (define /load i/load)
 
