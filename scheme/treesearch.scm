@@ -3,6 +3,11 @@
 	 (predicates nonnegative-real? length->=)
 	 test)
 
+(defmacro (IF-DEBUG arg)
+  (if #f
+      arg
+      `(void)))
+
 
 ;; we use symbols to represent cities
 (def city? symbol?)
@@ -79,7 +84,7 @@
        (first l)))
 
 (def (add! path frontier)
-     (println "adding: " (.to (.first path)))
+     (IF-DEBUG (println "adding: " (.to (.first path))))
      (let ((l (unbox frontier)))
        (set-box! frontier (cons path l))))
 
@@ -120,7 +125,7 @@
 	     (if (eq? city end)
 		 path
 		 (begin
-		   (println city)
+		   (IF-DEBUG (println city))
 		   (for-each (lambda (a)
 			       (add! (.add path a) frontier))
 			     (links-for city))
