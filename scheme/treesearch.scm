@@ -3,7 +3,8 @@
 	 (predicates nonnegative-real? length->= box-of)
 	 test
 	 cj-seen
-	 wbcollection)
+	 wbcollection
+	 (cj-functional-2 chain*))
 
 (defmacro (IF-DEBUG arg)
   (if #t
@@ -76,34 +77,38 @@
  (14.5 (A B C)))
 
 
-;; The "frontier" (as called in the video) is a boxed list of paths
-;; (boxing is necessary to allow for mutation--the used data
-;; structures are immutable). It's the set of paths already taken.
+;; The "frontier" (as called in the video) is the collection of paths
+;; already taken.
 
-(def frontier? (box-of wbcollection?))
+(class frontier
+       (struct constructor-name: _frontier
+	       #(wbcollection? pathcollection))
+       
+       (def (frontier . paths)
+	    (_frontier (list.wbcollection .cmp paths)))
 
-(def (frontier . paths)
-     (box (list.wbcollection .cmp paths)))
+       ;; remove-choice choses one of the paths, removes it from the
+       ;; frontier and returns it
+       (method (remove-choice f)
+	       (letv ((min rest) (.min&rest (.pathcollection f)))
+		     (values min (_frontier rest))))
 
-;; remove-choice!  choses one of the paths, removes it from the
-;; frontier and returns it
-(def (remove-choice! #(frontier? frontier))
-     (letv ((min rest) (.min&rest (unbox frontier)))
-	   (set-box! frontier rest)
-	   min))
+       (method (add f path)
+	       (IF-DEBUG (println "adding: " (.to (.first path))))
+	       (.pathcollection-update f (chain* (.add path))))
 
-(def (add! path #(frontier? frontier))
-     (IF-DEBUG (println "adding: " (.to (.first path))))
-     (set-box! frontier
-	       (.add (unbox frontier) path)))
+       ;; delegates
+       (method list (comp .list .pathcollection))
+       (method empty? (comp .empty? .pathcollection)))
 
 (TEST
  > (def f (frontier (path (citylink 'A 'B 3))
 		    (path (citylink 'A 'C 2))
 		    (path (citylink 'A 'D 2.5))))
- > (.view (remove-choice! f))
+ > (defvalues (p f*) (.remove-choice f))
+ > (.view p)
  (2 (A C))
- > (map .view (.list (unbox f)))
+ > (map .view (.list f*))
  ((2.5 (A D)) (3 (A B))))
 
 
@@ -125,26 +130,26 @@
 		    (eq? (.from cl) city))
 		  links*))
 
-     (let ((frontier (frontier (path (citylink start start 0)))))
-       (letv ((visited? visited!) (make-seen?+!))
-
-	     (let loop ()
-	       ;;(step)
-	       (if (.empty? (unbox frontier))
-		   'FAIL
-		   (let* ((path (remove-choice! frontier))
-			  (s (.first path))
-			  (city (.to s)))
-		     (visited! city)
-		     (if (eq? city end)
-			 path
-			 (begin
-			   (IF-DEBUG (println city))
-			   (for-each (lambda (a)
-				       (unless (visited? (.to a))
-					       (add! (.add path a) frontier)))
-				     (links-for city))
-			   (loop)))))))))
+     (let loop ((frontier (frontier (path (citylink start start 0))))
+		(visited (empty-wbcollection symbol-cmp)))
+       ;;(step)
+       (if (.empty? frontier)
+	   'FAIL
+	   (letv ((path frontier) (.remove-choice frontier))
+		 (let* ((s (.first path))
+			(city (.to s)))
+		   (if (eq? city end)
+		       path
+		       (begin
+			 (IF-DEBUG (println city))
+			 (loop
+			  (fold (lambda (a frontier)
+				  (if (.contains? visited (.to a))
+				      frontier
+				      (.add frontier (.add path a))))
+				frontier
+				(links-for city))
+			  (.add visited city)))))))))
 
 
 (def treesearch* (comp .view treesearch))
