@@ -68,7 +68,7 @@
 		      l))))
 
        ;; compare two paths, returning lt eq gt
-       (method cmp (on .total-distance number-cmp)))
+       (method distance-cmp (on .total-distance number-cmp)))
 
 (TEST
  > (.view (path (citylink 'A 'B 10)))
@@ -85,7 +85,7 @@
 	       #(wbcollection? pathcollection))
        
        (def (frontier . paths)
-	    (_frontier (list.wbcollection .cmp paths)))
+	    (_frontier (list.wbcollection .distance-cmp paths)))
 
        ;; remove-choice choses one of the paths, removes it from the
        ;; frontier and returns it
