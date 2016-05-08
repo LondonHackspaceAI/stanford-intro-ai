@@ -1,5 +1,6 @@
 (require easy
 	 typed-list
+	 (list-util-2 segregate*)
 	 (predicates nonnegative-real? length->= box-of)
 	 test
 	 cj-seen
@@ -121,14 +122,13 @@
 		 #(city? start)
 		 #(city? end))
 
-     (def links* (append links
-			 (map .reverse links)))
-     
      ;; all links away from a given city:
-     (def (links-for #(city? city))
-	  (filter (lambda (cl)
-		    (eq? (.from cl) city))
-		  links*))
+     (def links-for
+	  (let* ((links* (append links
+				 (map .reverse links)))
+		 (t (list->table (segregate* links* .from symbol<?))))
+	    (lambda (#(city? c))
+	      (table-ref t c '()))))
 
      (let loop ((frontier (frontier (path (citylink start start 0))))
 		(visited (empty-wbcollection symbol-cmp)))
