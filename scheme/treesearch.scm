@@ -7,10 +7,10 @@
 	 wbcollection
 	 (cj-functional-2 chain*))
 
-(defmacro (IF-DEBUG arg)
+(defmacro (DEBUG dbg . body)
   (if #t
-      arg
-      `(void)))
+      `(begin ,dbg ,@body)
+      `(begin ,@body)))
 
 
 ;; we use symbols to represent cities
@@ -95,8 +95,8 @@
 		     (values min (_frontier rest))))
 
        (method (add f path)
-	       (IF-DEBUG (println "adding: " (.to (.first path))))
-	       (.pathcollection-update f (chain* (.add path))))
+	       (DEBUG (println "adding: " (.to (.first path)))
+		      (.pathcollection-update f (chain* (.add path)))))
 
        ;; delegates
        (method list (comp .list .pathcollection))
@@ -140,16 +140,15 @@
 			(city (.to s)))
 		   (if (eq? city end)
 		       path
-		       (begin
-			 (IF-DEBUG (println city))
-			 (loop
-			  (fold (lambda (a frontier)
-				  (if (.contains? visited (.to a))
-				      frontier
-				      (.add frontier (.add path a))))
-				frontier
-				(links-for city))
-			  (.add visited city)))))))))
+		       (DEBUG (println city)
+			      (loop
+			       (fold (lambda (a frontier)
+				       (if (.contains? visited (.to a))
+					   frontier
+					   (.add frontier (.add path a))))
+				     frontier
+				     (links-for city))
+			       (.add visited city)))))))))
 
 
 (def treesearch* (comp .view treesearch))
