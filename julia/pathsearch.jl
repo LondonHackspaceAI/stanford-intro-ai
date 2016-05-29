@@ -1,6 +1,6 @@
 module PathSearch
 
-export search, Node, Path, Segment, Graph, BothWayGraph, Frontier
+export run_search, Node, Path, Segment, Graph, BothWayGraph, Frontier
 
 type Node
 	name::AbstractString

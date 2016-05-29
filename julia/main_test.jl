@@ -30,5 +30,5 @@ graph = BothWayGraph([Segment(Node("Arad"), Node("Zerind"), 75),
      Segment(Node("Vaslui"), Node("Iasi"), 92),
      Segment(Node("Iasi"), Node("Neamt"), 87)])
 
-println(PathSearch.run_search(Node("Arad"), Node("Bucharest"), graph))
+println(run_search(Node("Arad"), Node("Bucharest"), graph))
 
