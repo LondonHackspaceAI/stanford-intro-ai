@@ -1,4 +1,6 @@
+module PathSearch
 
+export search, Node, Path, Segment, Graph, BothWayGraph, Frontier
 
 type Node
 	name::AbstractString
@@ -53,33 +55,6 @@ function edges(g::OneWayGraph)
 	g.one_way_edges
 end
 
-graph = BothWayGraph([Segment(Node("Arad"), Node("Zerind"), 75),
-     Segment(Node("Arad"), Node("Sibiu"), 140),
-     Segment(Node("Arad"), Node("Timisoara"), 118),
-     Segment(Node("Zerind"), Node("Dradea"), 71),
-     Segment(Node("Dradea"), Node("Sibiu"), 151),
-     Segment(Node("Sibiu"), Node("Fagaras"), 99),
-     Segment(Node("Sibiu"), Node("RimnicuVilcea"), 80),
-     Segment(Node("Fagaras"), Node("Bucharest"), 211),
-     Segment(Node("RimnicuVilcea"), Node("Pitesti"), 97),
-     Segment(Node("RimnicuVilcea"), Node("Craiova"), 146),
-     Segment(Node("Pitesti"), Node("Craiova"), 138),
-     Segment(Node("Pitesti"), Node("Bucharest"), 101),
-     Segment(Node("Timisoara"), Node("Lugoj"), 111),
-     Segment(Node("Lugoj"), Node("Mehadia"), 70),
-     Segment(Node("Mehadia"), Node("Drobeta"), 75),
-     Segment(Node("Drobeta"), Node("Craiova"), 120),
-     Segment(Node("Bucharest"), Node("Giurgiu"), 90),
-     Segment(Node("Bucharest"), Node("Urziceni"), 85),
-     Segment(Node("Urziceni"), Node("Hirsova"), 98),
-     Segment(Node("Hirsova"), Node("Eforie"), 86),
-     Segment(Node("Urziceni"), Node("Vaslui"), 142),
-     Segment(Node("Vaslui"), Node("Iasi"), 92),
-     Segment(Node("Iasi"), Node("Neamt"), 87)])
-
-#fullgraph = edges(graph)
-
-#for loop
 # node A , node B , graph of segents  ->  (array) of best paths
 function outgoing_segments(n::Node, g::Graph)
 	filter(x -> x.from.name == n.name ,  edges(g))
@@ -108,11 +83,12 @@ function path_search(f::Frontier, g::Graph, e::Node)
 	end
 end
 
-function search(start::Node, end_node::Node, g::Graph)
+function run_search(start::Node, end_node::Node, g::Graph)
 
 	init_frontier = Frontier([Path([Segment(start, start, 0)])])
 	first_best_path = path_search(init_frontier, g, end_node)
 end
 
 
+end #PathSearch module
 
