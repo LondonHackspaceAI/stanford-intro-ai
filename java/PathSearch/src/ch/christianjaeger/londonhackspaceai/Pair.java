@@ -37,8 +37,13 @@ public class Pair<T> extends List<T> {
 			: rest1;
 	}
 
+	public List<T> append(List<T> l) {
+		return new Pair<T>(first, rest.append(l));
+	}
+
 	public void forEach(Action<T> proc) {
 		proc.run(first);
 		rest.forEach(proc);
 	}
+
 }

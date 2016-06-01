@@ -15,6 +15,10 @@ public class Null<T> extends List<T> {
 		return new Null<T>();
 	}
 
+	public List<T> append(List<T> l) {
+		return new Null<T>();
+	}
+
 	public void forEach(Action<T> proc) {
 		return;
 	}

@@ -11,9 +11,26 @@ public abstract class List<T> {
 	
 	public abstract boolean is_null();
 	
+	public List<T> cons(T v) {
+		return new Pair<T> (v, this);
+	}
+	
 	public abstract <T2> List<T2> map(Function<T,T2> fn);
 
 	public abstract List<T> filter(Function<T,Boolean> pred);
+
+	public List<T> reverse() {
+		List<T> out= new Null<T>();
+		List<T> in= this;
+		while (!(in.is_null())) {
+			Pair<T> in_= (Pair<T>) in;
+			out= new Pair<T> (in_.first(), out);
+			in= in_.rest();
+		}
+		return out;
+	}
+	
+	public abstract List<T> append(List<T> l);
 	
 	public abstract void forEach(Action<T> proc);
 
