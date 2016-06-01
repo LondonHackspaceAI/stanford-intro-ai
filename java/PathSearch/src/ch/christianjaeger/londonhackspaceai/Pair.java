@@ -9,6 +9,8 @@ public class Pair<T> extends List<T> {
 		rest= r;
 	}
 
+	public boolean is_null() { return false; }
+
 	public T first() {
 		return first;
 	}

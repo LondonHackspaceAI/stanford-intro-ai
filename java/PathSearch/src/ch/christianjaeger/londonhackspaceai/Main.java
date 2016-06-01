@@ -6,7 +6,11 @@ public class Main {
 		List<Integer> b= a.map(new StringToInteger());
 		List<Integer> c= b.filter(new IntegerBelow(10));
 		c.forEach(new Println<Integer>());
-		System.out.print("first = ");
-		//System.out.println(c.first());
+		if (c.is_null()) {
+			System.out.print("empty result");
+		} else {
+			System.out.print("first = ");
+			System.out.println(((Pair<Integer>)c).first());
+		}
 	}
 }

@@ -4,6 +4,8 @@ public class Null<T> extends List<T> {
 	
 	public Null() {
 	}
+
+	public boolean is_null() { return true; }
 	
 	public <T2> Null<T2> map(Function<T,T2> fn) {
 		return new Null<T2>();
