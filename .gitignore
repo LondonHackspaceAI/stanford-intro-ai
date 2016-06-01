@@ -1,3 +1,5 @@
 *~
 .test-*.scm
 *.xhtml
+java/.metadata/
+*.class
