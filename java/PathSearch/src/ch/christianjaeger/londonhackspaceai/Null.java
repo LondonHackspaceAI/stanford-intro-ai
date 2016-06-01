@@ -5,8 +5,8 @@ public class Null<T> extends List<T> {
 	public Null() {
 	}
 	
-	public Null<T> map(Function<T,T> fn) {
-		return new Null<T>();
+	public <T2> Null<T2> map(Function<T,T2> fn) {
+		return new Null<T2>();
 	}
 
 	public List<T> filter(Function<T,Boolean> pred) {

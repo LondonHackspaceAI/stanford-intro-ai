@@ -25,8 +25,8 @@ public class Pair<T> extends List<T> {
 		return new Pair<T>(first, rest);
 	}
 	
-	public Pair<T> map(Function<T,T> fn) {
-		return new Pair<T>(fn.app(first), rest.map(fn));
+	public <T2> Pair<T2> map(Function<T,T2> fn) {
+		return new Pair<T2>(fn.app(first), rest.map(fn));
 	}
 	
 	public List<T> filter(Function<T,Boolean> pred) {

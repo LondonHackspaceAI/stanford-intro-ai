@@ -9,7 +9,7 @@ public abstract class List<T> {
 		return r;
 	}
 	
-	public abstract List<T> map(Function<T,T> fn);
+	public abstract <T2> List<T2> map(Function<T,T2> fn);
 
 	public abstract List<T> filter(Function<T,Boolean> pred);
 	
