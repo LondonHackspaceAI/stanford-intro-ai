@@ -50,6 +50,14 @@ public class Pair<T> extends List<T> {
 		return new Pair<T>(first, rest.append(l));
 	}
 
+	public List<T> join(T v) {
+		return rest.is_null() ? this : new Pair<T> (first, new Pair<T>(first, new Pair<T> (v, rest.join(v))));
+	}
+
+	public <T2> T2 fold(Function2<T,T2,T2> fn, T2 init) {
+		return rest.fold(fn, fn.app(first,init));
+	}
+
 	public void forEach(Action<T> proc) {
 		proc.run(first);
 		rest.forEach(proc);

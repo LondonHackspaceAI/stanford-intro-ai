@@ -12,6 +12,10 @@ public abstract class List<T> {
 	public static <T> List<T> from(T... a) {
 		return fromArray(a);
 	}
+	
+	public String toString() {
+		return this.map<String>(new ToString()).join(", ").append(List.from(")")).cons("(").stringsJoin();
+	}
 		
 	public int length() {
 		int len=0;
@@ -45,7 +49,16 @@ public abstract class List<T> {
 	}
 	
 	public abstract List<T> append(List<T> l);
+
+	public abstract List<T> join(T v);
 	
+	public String stringsJoin() {
+		int strlen= map(new StringLength()).fold(new IntegerAdd(),0);
+		
+	}
+
+	public abstract <T2> T2 fold(Function2<T,T2,T2> fn, T2 init);
+
 	public abstract void forEach(Action<T> proc);
 
 }

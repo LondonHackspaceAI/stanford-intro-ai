@@ -24,6 +24,14 @@ public class Null<T> extends List<T> {
 		return new Null<T>();
 	}
 
+	public List<T> join(T v) {
+		return new Null<T>();
+	}
+
+	public <T2> T2 fold(Function2<T,T2,T2> fn, T2 init) {
+		return init;
+	}
+	
 	public void forEach(Action<T> proc) {
 		return;
 	}
