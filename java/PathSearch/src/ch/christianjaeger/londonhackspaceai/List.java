@@ -53,10 +53,9 @@ public abstract class List<T> {
 	public abstract List<T> join(T v);
 	
 	public String stringsJoin() {
-		// XX can I avoid casting here? That's "wrong", should know outside if T == String.
-		List<String> lengths= this.map(new StringLength());
-		int strlen= lengths.fold(new IntegerAdd(),0);
-		
+		StringBuilder builder = new StringBuilder("");
+		forEach(new StringAppender(builder));
+		return builder.toString();
 	}
 
 	public abstract <T2> T2 fold(Function2<T,T2,T2> fn, T2 init);
