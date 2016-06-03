@@ -28,9 +28,8 @@ type Path struct {
 
 
 func main() {
-	fmt.Println("agent lol")
 
-	graph4 := Graph{[]Segment{Segment{Node{"Arad"}, Node{"Zerind"}, 75},
+	graph := Graph{[]Segment{Segment{Node{"Arad"}, Node{"Zerind"}, 75},
      Segment{Node{"Arad"}, Node{"Sibiu"}, 140},
      Segment{Node{"Arad"}, Node{"Timisoara"}, 118},
      Segment{Node{"Zerind"}, Node{"Dradea"}, 71},
@@ -54,10 +53,10 @@ func main() {
      Segment{Node{"Vaslui"}, Node{"Iasi"}, 92},
      Segment{Node{"Iasi"}, Node{"Neamt"}, 87}}}
 
-	graph5 := graph4.makebothways()
+	graphb := graph.makebothways()
 	//fmt.Println(graph5)
 
-	output := outgoing_segments(Node{"Arad"}, graph5)
+	output := outgoing_segments(Node{"Arad"}, graphb)
 	for i := 0; i < len(output); i++ {
 		fmt.Println(output[i])
 		fmt.Println("**************")
@@ -67,7 +66,7 @@ func main() {
 	testpath := Path{[]Segment{Segment{Node{"Arad"}, Node{"Zerind"}, 75}, Segment{Node{"Zerind"}, Node{"Dradea"}, 71} }}
 	testfront := Frontier{[]Path{testpath}}
 
-	extendoutput := extend_frontier(testpath, testfront, graph5)
+	extendoutput := extend_frontier(testpath, testfront, graphb)
 
 	for i := 0; i < len(extendoutput.paths); i++ {
 		fmt.Println(extendoutput.paths[i])
@@ -76,14 +75,14 @@ func main() {
 	testpath2 := Path{[]Segment{Segment{Node{"Arad"}, Node{"Zerind"}, 75}, Segment{Node{"Zerind"}, Node{"Dradea"}, 71} }}
 	testfront2 := Frontier{[]Path{testpath2}}
 
-	pathsearchoutputtest := path_search(testfront2, graph5, Node{"Timisoara"})
-	fmt.Println("+++++***+*+*+*+************")
+	pathsearchoutputtest := path_search(testfront2, graphb, Node{"Timisoara"})
+	fmt.Println("***************")
 	fmt.Println(pathsearchoutputtest)
 
 
-	fmt.Println("+++++***+*+*+*+************")
-	fmt.Println("+++++***+*+*+*+************")
-	runsearchoutput := runsearch(Node{"Arad"}, Node{"Dradea"}, graph5)
+	fmt.Println("************")
+	fmt.Println("************")
+	runsearchoutput := runsearch(Node{"Arad"}, Node{"Dradea"}, graphb)
 	fmt.Println(runsearchoutput)
 
 }
