@@ -14,7 +14,7 @@ public abstract class List<T> {
 	}
 	
 	public String toString() {
-		return this.map<String>(new ToString()).join(", ").append(List.from(")")).cons("(").stringsJoin();
+		return this.map(new ToString()).join(", ").append(List.from(")")).cons("(").stringsJoin();
 	}
 		
 	public int length() {
@@ -53,7 +53,9 @@ public abstract class List<T> {
 	public abstract List<T> join(T v);
 	
 	public String stringsJoin() {
-		int strlen= map(new StringLength()).fold(new IntegerAdd(),0);
+		// XX can I avoid casting here? That's "wrong", should know outside if T == String.
+		List<String> lengths= this.map(new StringLength());
+		int strlen= lengths.fold(new IntegerAdd(),0);
 		
 	}
 
