@@ -8,4 +8,8 @@ public class Just<T> extends Maybe<T> {
 	public T value() {
 		return value;
 	}
+	// to avoid having to cast all the time?: (XX same issue in List)
+	public T xvalue() {
+		return value;
+	}
 }

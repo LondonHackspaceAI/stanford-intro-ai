@@ -14,22 +14,26 @@ public class Queue <T> {
 							 new Null<T> ());
 	}
 	
+	public static <T> Queue<T> from(T... elements) {
+		return fromArray(elements);
+	}
+	
 	public Queue<T> enqueue(T v) {
 		return new Queue<T> (forward.cons(v), backward);
 	}
 	
-	public Tuple2<Queue<T>,Maybe<T>> maybeDequeue() {
+	public Values2<Queue<T>,Maybe<T>> maybeDequeue() {
 		if (backward.is_null()) {
 			if (forward.is_null()) {
-				return new Tuple2<Queue<T>,Maybe<T>>(this, new Nothing<T>());
+				return new Values2<Queue<T>,Maybe<T>>(this, new Nothing<T>());
 			} else {
 				List<T> ba= forward.reverse();
-				return new Tuple2<Queue<T>,Maybe<T>>
+				return new Values2<Queue<T>,Maybe<T>>
 					(new Queue<T>(new Null<T>(), ((Pair<T>)ba).rest()),
 					 new Just<T>(((Pair<T>)ba).first()));
 			}
 		} else {
-			return new Tuple2<Queue<T>,Maybe<T>>
+			return new Values2<Queue<T>,Maybe<T>>
 				(new Queue<T>(forward, ((Pair<T>)backward).rest()),
 			     new Just<T>(((Pair<T>)backward).first()));
 		}
@@ -37,6 +41,10 @@ public class Queue <T> {
 	
 	public List<T> list() {
 		return forward.append(backward.reverse());
+	}
+	
+	public List<T> rlist() {
+		return backward.append(forward.reverse());
 	}
 	
 	public boolean is_empty() {

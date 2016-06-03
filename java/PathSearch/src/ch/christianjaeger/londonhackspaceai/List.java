@@ -9,18 +9,10 @@ public abstract class List<T> {
 		return r;
 	}
 
-	public T[] toArray() {
-		int len= length();
-		T[] a = new T[len];
-		List<T> l= this;
-		int i=0;
-		while (! l.is_null()) {
-			a[i]= ((Pair<T>)l).first();
-			i++;
-		}
-		return a;
+	public static <T> List<T> from(T... a) {
+		return fromArray(a);
 	}
-	
+		
 	public int length() {
 		int len=0;
 		List<T> l= this;

@@ -11,6 +11,15 @@ public class Pair<T> extends List<T> {
 
 	public boolean is_null() { return false; }
 
+	@SuppressWarnings("unchecked")
+	public boolean equals(Object v) {
+		return (! ((List<T>)v).is_null()) 
+				&&
+				first.equals(((Pair<T>)v).first())
+				&&
+				rest.equals(((Pair<T>)v).rest());
+	}
+
 	public T first() {
 		return first;
 	}
