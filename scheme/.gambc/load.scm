@@ -77,7 +77,7 @@
 (/load "treesearch")
 (/load "main")
 (/load "to-julia")
-
+(/load "to-go")
 
 (define (load-require)
   (i/load "lib/Maybe")

@@ -15,6 +15,7 @@
 
 ;; we use symbols to represent cities
 (def city? symbol?)
+(def. city.name symbol.string)
 
 ;; a citylink is a path segment between two cities
 (class citylink
