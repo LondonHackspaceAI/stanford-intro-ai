@@ -38,7 +38,7 @@
        ;; n-ary custom constructor function that takes the links
        ;; making up a path:
        (def (path . links)
-	    (_path (list.typed-list citylink? (reverse links))
+	    (_path (list->typed-list citylink? (reverse links))
 		   (fold + 0 (map .distance links))))
 
        (method (add p link)
