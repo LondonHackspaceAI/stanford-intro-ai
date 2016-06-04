@@ -163,12 +163,12 @@
 (def treesearch* (comp .view treesearch))
 
 
-(def (lists.citylinks l)
+(def (lists->citylinks l)
      (map (applying citylink) l))
 
 
 (def (treesearch** ls a b)
-     (treesearch* (lists.citylinks ls) a b))
+     (treesearch* (lists->citylinks ls) a b))
 
 (TEST
  > (treesearch** '() 'A 'B)
