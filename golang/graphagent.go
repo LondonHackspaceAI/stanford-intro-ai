@@ -54,7 +54,6 @@ func main() {
      Segment{Node{"Iasi"}, Node{"Neamt"}, 87}}}
 
 	graphb := graph.makebothways()
-	//fmt.Println(graph5)
 
 	output := outgoing_segments(Node{"Arad"}, graphb)
 	for i := 0; i < len(output); i++ {
