@@ -35,6 +35,11 @@
 	       #((typed-list-of citylink?) links)
 	       #(nonnegative-real? total-distance))
 
+       (method (show p)
+	       (let-path ((links dist) p)
+			 ;; dist is recalculated, only show links
+			 `(path ,@(map .show (.list links)))))
+
        ;; n-ary custom constructor function that takes the links
        ;; making up a path:
        (def (path . links)
@@ -72,6 +77,10 @@
        (method distance-cmp (on .total-distance number-cmp)))
 
 (TEST
+ > (.show (path (citylink 'A 'B 10)))
+ (path (citylink 'A 'B 10))
+
+ ;; Had .view first, could drop it now... XX
  > (.view (path (citylink 'A 'B 10)))
  (10 (A B))
  > (.view (path (citylink 'A 'B 10) (citylink 'B 'C 4.5)))
