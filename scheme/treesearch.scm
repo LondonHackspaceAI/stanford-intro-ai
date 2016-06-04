@@ -38,7 +38,7 @@
        (method (show p)
 	       (let-path ((links dist) p)
 			 ;; dist is recalculated, only show links
-			 `(path ,@(map .show (.list links)))))
+			 `(path ,@(map .show (reverse (.list links))))))
 
        ;; n-ary custom constructor function that takes the links
        ;; making up a path:
