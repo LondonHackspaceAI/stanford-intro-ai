@@ -12,11 +12,11 @@
 
 (def. (citylink.julia-string l)
   (let. ((from to distance) l)
-	(string-append "citylink("
+	(string-append "Segment(Node("
 		       (.julia-string from)
-		       ", "
+		       "), Node("
 		       (.julia-string to)
-		       ", "
+		       "), "
 		       (.julia-string distance)
 		       ")")))
 
@@ -24,5 +24,5 @@
      (string-append "a = ["
 		    (strings-join (map .julia-string links)
 				  ",\n     ")
-		    "];"))
+		    "]"))
 

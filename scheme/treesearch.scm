@@ -7,14 +7,15 @@
 	 wbcollection
 	 (cj-functional-2 chain*))
 
-(defmacro (IF-DEBUG arg)
+(defmacro (DEBUG dbg . body)
   (if #t
-      arg
-      `(void)))
+      `(begin ,dbg ,@body)
+      `(begin ,@body)))
 
 
 ;; we use symbols to represent cities
 (def city? symbol?)
+(def. city.name symbol.string)
 
 ;; a citylink is a path segment between two cities
 (class citylink
@@ -38,7 +39,7 @@
        ;; n-ary custom constructor function that takes the links
        ;; making up a path:
        (def (path . links)
-	    (_path (list.typed-list citylink? (reverse links))
+	    (_path (list->typed-list citylink? (reverse links))
 		   (fold + 0 (map .distance links))))
 
        (method (add p link)
@@ -72,6 +73,10 @@
        (method distance-cmp (on .total-distance number-cmp)))
 
 (TEST
+ > (.show (path (citylink 'A 'B 10)))
+ (_path (typed-list citylink? (citylink 'A 'B 10)) 10)
+
+ ;; Had .view first, could drop it now... XX
  > (.view (path (citylink 'A 'B 10)))
  (10 (A B))
  > (.view (path (citylink 'A 'B 10) (citylink 'B 'C 4.5)))
@@ -95,8 +100,8 @@
 		     (values min (_frontier rest))))
 
        (method (add f path)
-	       (IF-DEBUG (println "adding: " (.to (.first path))))
-	       (.pathcollection-update f (chain* (.add path))))
+	       (DEBUG (println "adding: " (.to (.first path)))
+		      (.pathcollection-update f (chain* (.add path)))))
 
        ;; delegates
        (method list (comp .list .pathcollection))
@@ -140,27 +145,26 @@
 			(city (.to s)))
 		   (if (eq? city end)
 		       path
-		       (begin
-			 (IF-DEBUG (println city))
-			 (loop
-			  (fold (lambda (a frontier)
-				  (if (.contains? visited (.to a))
-				      frontier
-				      (.add frontier (.add path a))))
-				frontier
-				(links-for city))
-			  (.add visited city)))))))))
+		       (DEBUG (println city)
+			      (loop
+			       (fold (lambda (a frontier)
+				       (if (.contains? visited (.to a))
+					   frontier
+					   (.add frontier (.add path a))))
+				     frontier
+				     (links-for city))
+			       (.add visited city)))))))))
 
 
 (def treesearch* (comp .view treesearch))
 
 
-(def (lists.citylinks l)
+(def (lists->citylinks l)
      (map (applying citylink) l))
 
 
 (def (treesearch** ls a b)
-     (treesearch* (lists.citylinks ls) a b))
+     (treesearch* (lists->citylinks ls) a b))
 
 (TEST
  > (treesearch** '() 'A 'B)
