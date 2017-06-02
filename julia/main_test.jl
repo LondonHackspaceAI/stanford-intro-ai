@@ -6,7 +6,8 @@ include("pathsearch.jl")
 
 using PathSearch
 
-graph = BothWayGraph([Segment(Node("Arad"), Node("Zerind"), 75),
+graph = BothWayGraph([
+     Segment(Node("Arad"), Node("Zerind"), 75),
      Segment(Node("Arad"), Node("Sibiu"), 140),
      Segment(Node("Arad"), Node("Timisoara"), 118),
      Segment(Node("Zerind"), Node("Dradea"), 71),
