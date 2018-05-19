@@ -1,5 +1,20 @@
 (define (lo)
+  (current-warn-undefined-variables? #t)
   (generate-proper-tail-calls #f)
+  (current-read-square-as-vector? #t)
+  (current-write-vector-as-square? #t)
+  (let ((p (console-port)))
+    (output-port-readtable-set!
+     p
+     (readtable-sharing-allowed?-set
+      (output-port-readtable p)
+      #t)))
+  ;; > (=> (current-output-port) output-port-readtable readtable-sharing-allowed?)
+  ;; #t
+  ;; > (=> (current-output-port) input-port-readtable readtable-sharing-allowed?)
+  ;; #f
+  ;; > (cons 100 (circular-list 1 2 3))
+  ;; (100 . #0=(1 2 3 . #0#))
   (load ".gambc/load.scm"))
 
 (lo)
