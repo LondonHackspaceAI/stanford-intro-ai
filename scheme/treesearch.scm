@@ -16,7 +16,7 @@
 ;; we use symbols to represent cities
 (def city? symbol?)
 (def. city.name symbol.string)
-(def city-cmp symbol-cmp)
+
 
 ;; a citylink is a path segment between two cities
 (defclass (citylink [city? from]
@@ -25,11 +25,7 @@
 
   ;; swap start and end
   (defmethod (reverse s)
-    (citylink to from distance))
-
-  (defmethod cmp
-    (cmp-either (on citylink.from city-cmp)
-		(on citylink.to city-cmp))))
+    (citylink to from distance)))
 
 
 ;; a path is a list of citylinks; define an object holding it
@@ -70,12 +66,8 @@
 	   (rest l)
 	   l))))
 
-  ;; compare two paths, returning lt eq gt; but, only return eq if the
-  ;; paths are really the same, as otherwise we get duplication error
-  ;; from wbcollection.add
-  (defmethod distance-cmp
-    (cmp-either (on path.total-distance number-cmp)
-		(on path.links (typed-list:cmp-any citylink.cmp)))))
+  ;; compare two paths, returning lt eq gt
+  (defmethod distance-cmp (on .total-distance number-cmp)))
 
 
 (TEST
