@@ -122,7 +122,7 @@
   '(/load "lib/cj-cmp-location")
   '(/load "lib/cj-curry")
   '(/load "lib/cj-env-test")
-  '(/load "lib/cj-exception-handler")
+  (/load "lib/cj-exception-handler")
   (/load "lib/cj-ffi")
   '(/load "lib/cj-html-util")
   (/load "lib/cj-path")
