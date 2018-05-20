@@ -155,7 +155,7 @@
 			       (.add visited city)))))))))
 
 
-(def treesearch* (comp .view treesearch))
+(def treesearch* (comp// 3 .view treesearch))
 
 
 (def (lists->citylinks l)
