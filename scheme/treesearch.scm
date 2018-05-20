@@ -107,7 +107,7 @@
 
   (defmethod (add s path)
     (DEBUG (println "adding: " (=> path .first .to))
-	   (frontier.pathcollection-set s (.add pathcollection path))))
+	   (frontier.pathcollection-set s (.set pathcollection path))))
 
   ;; delegates
   (defmethod list (comp .list .pathcollection))
@@ -161,7 +161,7 @@
 							 (.add path a))))
 				     frontier
 				     (links-for city))
-			       (.add visited city)))))))))
+			       (.set visited city)))))))))
 
 
 (def treesearch* (comp// 3 .view treesearch))
