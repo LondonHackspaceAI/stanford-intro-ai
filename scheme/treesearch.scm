@@ -4,8 +4,8 @@
 	 (predicates nonnegative-real? length->= box-of)
 	 test
 	 cj-seen
-	 wbcollection
-	 (cj-functional-2 chain*))
+	 wbcollection)
+
 
 (defmacro (DEBUG dbg . body)
   (if #t
@@ -17,60 +17,58 @@
 (def city? symbol?)
 (def. city.name symbol.string)
 
-;; a citylink is a path segment between two cities
-(class citylink
-       (struct #(city? from)
-	       #(city? to)
-	       #(nonnegative-real? distance))
 
-       ;; swap start and end
-       (method (reverse p)
-	       (citylink (.to p)
-			 (.from p)
-			 (.distance p))))
+;; a citylink is a path segment between two cities
+(defclass (citylink [city? from]
+		    [city? to]
+		    [nonnegative-real? distance])
+
+  ;; swap start and end
+  (defmethod (reverse s)
+    (citylink to from distance)))
 
 
 ;; a path is a list of citylinks; define an object holding it
-(class path
-       (struct constructor-name: _path
-	       #((typed-list-of citylink?) links)
-	       #(nonnegative-real? total-distance))
+(defclass ((path _path)
+	   [(typed-list-of citylink?) links]
+	   [nonnegative-real? total-distance])
 
-       ;; n-ary custom constructor function that takes the links
-       ;; making up a path:
-       (def (path . links)
-	    (_path (list->typed-list citylink? (reverse links))
-		   (fold + 0 (map .distance links))))
+  ;; n-ary custom constructor function that takes the links
+  ;; making up a path:
+  (def (path . links)
+       (_path (list->typed-list citylink? (reverse links))
+	      (fold + 0 (map .distance links))))
 
-       (method (add p link)
-	       (_path (.cons (.links p) link)
-		      (+ (.total-distance p) (.distance link))))
+  (defmethod (add s link)
+    (_path (.cons links link)
+	   (+ total-distance (.distance link))))
 
-       ;; "first" link when looking backwards:
-       (method (first p)
-	       (.first (.links p)))
+  ;; "first" link when looking backwards:
+  (defmethod (first s)
+    (.first links))
 
-       (method (view p)
-	       (list
-		(.total-distance p)
-		(let ((l (map .from
-			      (.reverse-list
-			       (.links p)
-			       ;; append fake link for end city to
-			       ;; make it show up:
-			       (let ((c (.to (.first (.links p)))))
-				 (list (citylink c c 0)))))))
-		  ;; if the first and second city are the same,
-		  ;; then that's because of the stupid initial
-		  ;; frontier value from treesearch; drop the
-		  ;; duplicate then.
-		  (if (and (length->= l 2)
-			   (eq? (first l) (second l)))
-		      (rest l)
-		      l))))
+  (defmethod (view s)
+    (list
+     total-distance
+     (let ((l (map .from
+		   (.reverse-list
+		    links
+		    ;; append fake link for end city to
+		    ;; make it show up:
+		    (let ((c (.to (.first links))))
+		      (list (citylink c c 0)))))))
+       ;; if the first and second city are the same,
+       ;; then that's because of the stupid initial
+       ;; frontier value from treesearch; drop the
+       ;; duplicate then.
+       (if (and (length->= l 2)
+		(eq? (first l) (second l)))
+	   (rest l)
+	   l))))
 
-       ;; compare two paths, returning lt eq gt
-       (method distance-cmp (on .total-distance number-cmp)))
+  ;; compare two paths, returning lt eq gt
+  (defmethod distance-cmp (on .total-distance number-cmp)))
+
 
 (TEST
  > (.show (path (citylink 'A 'B 10)))
@@ -83,29 +81,30 @@
  (14.5 (A B C)))
 
 
+
 ;; The "frontier" (as called in the video) is the collection of paths
 ;; already taken.
 
-(class frontier
-       (struct constructor-name: _frontier
-	       #(wbcollection? pathcollection))
+(defclass ((frontier _frontier)
+	   [wbcollection? pathcollection])
        
-       (def (frontier . paths)
-	    (_frontier (list.wbcollection .distance-cmp paths)))
+  (def (frontier . paths)
+       (_frontier (list.wbcollection .distance-cmp paths)))
 
-       ;; remove-choice choses one of the paths, removes it from the
-       ;; frontier and returns it
-       (method (remove-choice f)
-	       (letv ((min rest) (.min&rest (.pathcollection f)))
-		     (values min (_frontier rest))))
+  ;; remove-choice choses one of the paths, removes it from the
+  ;; frontier and returns it
+  (defmethod (remove-choice s)
+    (letv ((min rest) (.min&rest pathcollection))
+	  (values min (_frontier rest))))
 
-       (method (add f path)
-	       (DEBUG (println "adding: " (.to (.first path)))
-		      (.pathcollection-update f (chain* (.add path)))))
+  (defmethod (add s path)
+    (DEBUG (println "adding: " (.to (.first path)))
+	   (.pathcollection-set s (.add pathcollection path))))
 
-       ;; delegates
-       (method list (comp .list .pathcollection))
-       (method empty? (comp .empty? .pathcollection)))
+  ;; delegates
+  (defmethod list (comp .list .pathcollection))
+  (defmethod empty? (comp .empty? .pathcollection)))
+
 
 (TEST
  > (def f (frontier (path (citylink 'A 'B 3))
