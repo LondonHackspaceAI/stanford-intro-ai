@@ -98,7 +98,7 @@
 	  (values min (_frontier rest))))
 
   (defmethod (add s path)
-    (DEBUG (println "adding: " (.to (.first path)))
+    (DEBUG (println "adding: " (=> path .first .to))
 	   (.pathcollection-set s (.add pathcollection path))))
 
   ;; delegates
