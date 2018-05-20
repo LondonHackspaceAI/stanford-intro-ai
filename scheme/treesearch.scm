@@ -122,16 +122,16 @@
 
 
 
-(def (treesearch #((list-of citylink?) links)
-		 #(city? start)
-		 #(city? end))
+(def (treesearch [(list-of citylink?) links]
+		 [city? start]
+		 [city? end])
 
      ;; all links away from a given city:
      (def links-for
 	  (let* ((links* (append links
 				 (map .reverse links)))
 		 (t (list->table (segregate* links* .from symbol<?))))
-	    (lambda (#(city? c))
+	    (lambda ([city? c])
 	      (table-ref t c '()))))
 
      (let loop ((frontier (frontier (path (citylink start start 0))))
