@@ -89,7 +89,7 @@
 	   [wbcollection? pathcollection])
        
   (def (frontier . paths)
-       (_frontier (list.wbcollection .distance-cmp paths)))
+       (_frontier (list.wbcollection path.distance-cmp paths)))
 
   ;; remove-choice choses one of the paths, removes it from the
   ;; frontier and returns it
@@ -99,7 +99,7 @@
 
   (defmethod (add s path)
     (DEBUG (println "adding: " (=> path .first .to))
-	   (.pathcollection-set s (.add pathcollection path))))
+	   (frontier.pathcollection-set s (.add pathcollection path))))
 
   ;; delegates
   (defmethod list (comp .list .pathcollection))
@@ -149,7 +149,8 @@
 			       (fold (lambda (a frontier)
 				       (if (.contains? visited (.to a))
 					   frontier
-					   (.add frontier (.add path a))))
+					   (frontier.add frontier
+							 (.add path a))))
 				     frontier
 				     (links-for city))
 			       (.add visited city)))))))))
