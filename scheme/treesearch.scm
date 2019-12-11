@@ -117,14 +117,14 @@
  ((2.5 (A D)) (3 (A B))))
 
 
-(def. (symbol.view v)
+(def. (false.view v)
   v)
 
 
 
 (def (treesearch [(list-of citylink?) links]
 		 [city? start]
-		 [city? end])
+		 [city? end]) -> (maybe path?)
 
      ;; all links away from a given city:
      (def links-for
@@ -138,7 +138,7 @@
 		(visited (empty-wbcollection symbol-cmp)))
        ;;(step)
        (if (.empty? frontier)
-	   'FAIL
+	   #f
 	   (letv ((path frontier) (.remove-choice frontier))
 		 (let* ((s (.first path))
 			(city (.to s)))
@@ -168,15 +168,15 @@
 
 (TEST
  > (treesearch** '() 'A 'B)
- FAIL
+ #f
  > (treesearch** '((A C 3)) 'A 'B)
- FAIL ;; looped before seen check
+ #f ;; looped before seen check
  > (treesearch** '((C B 3)) 'A 'B)
- FAIL
+ #f
  > (treesearch** '((X Y 3)) 'A 'B)
- FAIL
+ #f
  > (treesearch** '((A A 3)) 'A 'B)
- FAIL ;; looped before seen check
+ #f ;; looped before seen check
  > (treesearch** '((A B 3)) 'A 'B)
  (3 (A B))
  > (treesearch** '((B A 3)) 'A 'B)
