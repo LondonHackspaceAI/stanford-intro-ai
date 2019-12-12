@@ -10,7 +10,7 @@
 (def. (symbol.julia-string s)
   (string.julia-string (symbol.string s)))
 
-(def. (citylink.julia-string l)
+(def. (Segment.julia-string l)
   (let. ((from to distance) l)
 	(string-append "Segment(Node("
 		       (.julia-string from)

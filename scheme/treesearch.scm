@@ -18,25 +18,25 @@
 (def. city.name symbol.string)
 
 
-;; a citylink is a path segment between two cities
-(defclass (citylink [city? from]
-		    [city? to]
-		    [nonnegative-real? distance])
+;; a Segment is a path segment between two cities
+(defclass (Segment [city? from]
+                   [city? to]
+                   [nonnegative-real? distance])
 
   ;; swap start and end
   (defmethod (reverse s)
-    (citylink to from distance)))
+    (Segment to from distance)))
 
 
-;; a path is a list of citylinks; define an object holding it
+;; a path is a list of Segments; define an object holding it
 (defclass ((path _path)
-	   [(typed-list-of citylink?) links]
+	   [(typed-list-of Segment?) links]
 	   [nonnegative-real? total-distance])
 
   ;; n-ary custom constructor function that takes the links
   ;; making up a path:
   (def (path . links)
-       (_path (list->typed-list citylink? (reverse links))
+       (_path (list->typed-list Segment? (reverse links))
 	      (fold + 0 (map .distance links))))
 
   (defmethod (add s link)
@@ -56,7 +56,7 @@
 		    ;; append fake link for end city to
 		    ;; make it show up:
 		    (let ((c (.to (.first links))))
-		      (list (citylink c c 0)))))))
+		      (list (Segment c c 0)))))))
        ;; if the first and second city are the same,
        ;; then that's because of the stupid initial
        ;; frontier value from treesearch; drop the
@@ -71,13 +71,13 @@
 
 
 (TEST
- > (.show (path (citylink 'A 'B 10)))
- (_path (typed-list citylink? (citylink 'A 'B 10)) 10)
+ > (.show (path (Segment 'A 'B 10)))
+ (_path (typed-list Segment? (Segment 'A 'B 10)) 10)
 
  ;; Had .view first, could drop it now... XX
- > (.view (path (citylink 'A 'B 10)))
+ > (.view (path (Segment 'A 'B 10)))
  (10 (A B))
- > (.view (path (citylink 'A 'B 10) (citylink 'B 'C 4.5)))
+ > (.view (path (Segment 'A 'B 10) (Segment 'B 'C 4.5)))
  (14.5 (A B C)))
 
 
@@ -107,9 +107,9 @@
 
 
 (TEST
- > (def f (frontier (path (citylink 'A 'B 3))
-		    (path (citylink 'A 'C 2))
-		    (path (citylink 'A 'D 2.5))))
+ > (def f (frontier (path (Segment 'A 'B 3))
+		    (path (Segment 'A 'C 2))
+		    (path (Segment 'A 'D 2.5))))
  > (defvalues (p f*) (.remove-choice f))
  > (.view p)
  (2 (A C))
@@ -122,7 +122,7 @@
 
 
 
-(def (treesearch [(list-of citylink?) links]
+(def (treesearch [(list-of Segment?) links]
 		 [city? start]
 		 [city? end]) -> (maybe path?)
 
@@ -134,7 +134,7 @@
 	    (lambda ([city? c])
 	      (table-ref t c '()))))
 
-     (let loop ((frontier (frontier (path (citylink start start 0))))
+     (let loop ((frontier (frontier (path (Segment start start 0))))
 		(visited (empty-wbcollection symbol-cmp)))
        ;;(step)
        (if (.empty? frontier)
@@ -159,12 +159,12 @@
 (def treesearch* (comp// 3 .view treesearch))
 
 
-(def (lists->citylinks l)
-     (map (applying citylink) l))
+(def (lists->Segments l)
+     (map (applying Segment) l))
 
 
 (def (treesearch** ls a b)
-     (treesearch* (lists->citylinks ls) a b))
+     (treesearch* (lists->Segments ls) a b))
 
 (TEST
  > (treesearch** '() 'A 'B)
