@@ -30,34 +30,34 @@
     (Edge to from distance)))
 
 
-(defclass (Path [(typed-list-of Edge?) links]
+(defclass (Path [(typed-list-of Edge?) edges]
                 [nonnegative-real? total-distance])
   "a list of path segments (edges)"
 
   (def empty-Path (Path (typed-list-null Edge?) 0))
   
-  ;; n-ary custom constructor function that takes the links
+  ;; n-ary custom constructor function that takes the edges
   ;; making up a Path:
-  (def (path . links)
-       (fold (flip Path.add) empty-Path links))
+  (def (path . edges)
+       (fold (flip Path.add) empty-Path edges))
 
-  (defmethod (add s link)
-    (Path (.cons links link)
-          (+ total-distance (.distance link))))
+  (defmethod (add s edge)
+    (Path (.cons edges edge)
+          (+ total-distance (.distance edge))))
 
   (defmethod (first s)
-    "'first' link as when looking backwards"
-    (.first links))
+    "'first' edge as when looking backwards"
+    (.first edges))
 
   (defmethod (view s)
     (list
      total-distance
      (let ((l (map .from
 		   (.reverse-list
-		    links
-		    ;; append fake link for end node to
+		    edges
+		    ;; append fake edge for end node to
 		    ;; make it show up:
-		    (let ((c (.to (.first links))))
+		    (let ((c (.to (.first edges))))
 		      (list (Edge c c 0)))))))
        ;; if the first and second node are the same,
        ;; then that's because of the stupid initial
@@ -124,7 +124,7 @@
 (def (frontier-update [Frontier? front]
                       [wbcollection? visited] ;; nodes
                       [Path? path]
-                      [(list-of Edge?) links])
+                      [(list-of Edge?) edges])
      -> Frontier?
 
      (fold (lambda (a front)
@@ -133,19 +133,19 @@
                  (Frontier.add front
                                (.add path a))))
            front
-           links))
+           edges))
 
 
-(def (treesearch [(list-of Edge?) links]
+(def (treesearch [(list-of Edge?) edges]
 		 [Node? start]
 		 [Node? end])
      -> (maybe Path?)
 
-     ;; all links away from a given node:
-     (def links-for
-	  (let* ((links* (append links
-				 (map .reverse links)))
-		 (t (list->table (segregate* links* .from symbol<?))))
+     ;; all edges away from a given node:
+     (def edges-for
+	  (let* ((edges* (append edges
+				 (map .reverse edges)))
+		 (t (list->table (segregate* edges* .from symbol<?))))
 	    (lambda ([Node? c]) -> (list-of Edge?)
                (table-ref t c '()))))
 
@@ -161,7 +161,7 @@
 			      (loop (frontier-update front
                                                      visited
                                                      path
-                                                     (links-for node))
+                                                     (edges-for node))
                                     (.set visited node)))))))))
 
 
