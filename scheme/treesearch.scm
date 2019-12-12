@@ -130,23 +130,23 @@
 	    (lambda ([City? c])
 	      (table-ref t c '()))))
 
-     (let loop ((frontier (frontier (path (Segment start start 0))))
+     (let loop ((front (frontier (path (Segment start start 0))))
 		(visited (empty-wbcollection symbol-cmp)))
-       (if (.empty? frontier)
+       (if (.empty? front)
 	   #f
-	   (letv ((path frontier) (.remove-choice frontier))
+	   (letv ((path front) (.remove-choice front))
 		 (let* ((s (.first path))
 			(city (.to s)))
 		   (if (eq? city end)
 		       path
 		       (DEBUG (println city)
 			      (loop
-			       (fold (lambda (a frontier)
+			       (fold (lambda (a front)
 				       (if (.contains? visited (.to a))
-					   frontier
-					   (Frontier.add frontier
+					   front
+					   (Frontier.add front
 							 (.add path a))))
-				     frontier
+				     front
 				     (links-for city))
 			       (.set visited city)))))))))
 
