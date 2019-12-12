@@ -8,8 +8,8 @@
 (def. (string.go-string s)
   (object->string s))
 
-(def. (City.go-string s)
-  (string.go-string (City.name s)))
+(def. (Node.go-string s)
+  (string.go-string (Node.name s)))
 
 (def. (Segment.go-string l)
   (let. ((from to distance) l)

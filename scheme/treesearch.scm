@@ -13,17 +13,17 @@
       `(begin ,@body)))
 
 
-;; we use symbols to represent cities
-(def City? symbol?)
-(def. City.name symbol.string)
-(def (City= [City? a] [City? b])
+;; we use symbols to represent nodes
+(def Node? symbol?)
+(def. Node.name symbol.string)
+(def (Node= [Node? a] [Node? b])
      (eq? a b))
 
 
-(defclass (Segment [City? from]
-                   [City? to]
+(defclass (Segment [Node? from]
+                   [Node? to]
                    [nonnegative-real? distance])
-  "a path segment between two cities"
+  "a path segment between two nodes (edge)"
 
   (defmethod (reverse s)
     "swap start and end"
@@ -54,16 +54,16 @@
      (let ((l (map .from
 		   (.reverse-list
 		    links
-		    ;; append fake link for end city to
+		    ;; append fake link for end node to
 		    ;; make it show up:
 		    (let ((c (.to (.first links))))
 		      (list (Segment c c 0)))))))
-       ;; if the first and second city are the same,
+       ;; if the first and second node are the same,
        ;; then that's because of the stupid initial
        ;; frontier value from treesearch; drop the
        ;; duplicate then.
        (if (and (length->= l 2)
-		(City= (first l) (second l)))
+		(Node= (first l) (second l)))
 	   (rest l)
 	   l))))
 
@@ -121,7 +121,7 @@
 
 
 (def (frontier-update [Frontier? front]
-                      [wbcollection? visited] ;; cities
+                      [wbcollection? visited] ;; nodes
                       [Path? path]
                       [(list-of Segment?) links])
      -> Frontier?
@@ -136,16 +136,16 @@
 
 
 (def (treesearch [(list-of Segment?) links]
-		 [City? start]
-		 [City? end])
+		 [Node? start]
+		 [Node? end])
      -> (maybe Path?)
 
-     ;; all links away from a given city:
+     ;; all links away from a given node:
      (def links-for
 	  (let* ((links* (append links
 				 (map .reverse links)))
 		 (t (list->table (segregate* links* .from symbol<?))))
-	    (lambda ([City? c]) -> (list-of Segment?)
+	    (lambda ([Node? c]) -> (list-of Segment?)
                (table-ref t c '()))))
 
      (let loop ((front (frontier (path (Segment start start 0))))
@@ -153,15 +153,15 @@
        (if (.empty? front)
 	   #f
 	   (letv ((path front) (.remove-choice front))
-		 (let (city (.to (.first path)))
-		   (if (City= city end)
+		 (let (node (.to (.first path)))
+		   (if (Node= node end)
 		       path
-		       (DEBUG (println city)
+		       (DEBUG (println node)
 			      (loop (frontier-update front
                                                      visited
                                                      path
-                                                     (links-for city))
-                                    (.set visited city)))))))))
+                                                     (links-for node))
+                                    (.set visited node)))))))))
 
 
 (def treesearch* (comp// 3 .view treesearch))
@@ -230,7 +230,7 @@
  ;; Now for all of these (that already have them): add random
  ;; unrelated, or singly connected, or even cross connected between
  ;; them, links that only link (directly or indirectly?) to the source
- ;; or target city (i.e. only link to one of the two, except for the
+ ;; or target node (i.e. only link to one of the two, except for the
  ;; existing links I set out above).  TODO.
 
  ;; Also, add longer multi-segment paths (more segments, as well as
