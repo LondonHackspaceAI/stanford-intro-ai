@@ -11,7 +11,7 @@
 (def. (symbol.haskell-string s)
   (string.haskell-string (symbol.string s)))
 
-(def. (citylink.haskell-string l)
+(def. (Segment.haskell-string l)
   (let. ((from to distance) l)
 	(string-append "(Segment (Node "
 		       (.haskell-string from)

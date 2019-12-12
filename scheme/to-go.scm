@@ -8,10 +8,10 @@
 (def. (string.go-string s)
   (object->string s))
 
-(def. (city.go-string s)
-  (string.go-string (city.name s)))
+(def. (City.go-string s)
+  (string.go-string (City.name s)))
 
-(def. (citylink.go-string l)
+(def. (Segment.go-string l)
   (let. ((from to distance) l)
 	(string-append "Segment{Node{"
 		       (.go-string from)
@@ -21,14 +21,14 @@
 		       (.go-string distance)
 		       "}")))
 
-(def. (path.go-string p)
+(def. (Path.go-string p)
   (string-append "Path{Segment[]{"
 		 (strings-join (map .go-string (.list (.links p)))
 			       ", ")
 		 "}}"))
 
 (TEST
- > (.go-string (path (citylink 'A 'B 10)))
+ > (.go-string (Path (Segment 'A 'B 10)))
  "Path{Segment[]{Segment{Node{\"A\"}, Node{\"B\"}, 10}}}")
 
 

@@ -14,13 +14,13 @@
 
 
 ;; we use symbols to represent cities
-(def city? symbol?)
-(def. city.name symbol.string)
+(def City? symbol?)
+(def. City.name symbol.string)
 
 
 ;; a Segment is a path segment between two cities
-(defclass (Segment [city? from]
-                   [city? to]
+(defclass (Segment [City? from]
+                   [City? to]
                    [nonnegative-real? distance])
 
   ;; swap start and end
@@ -28,20 +28,19 @@
     (Segment to from distance)))
 
 
-;; a path is a list of Segments; define an object holding it
-(defclass ((path _path)
-	   [(typed-list-of Segment?) links]
-	   [nonnegative-real? total-distance])
+;; a Path is a list of Segments; define an object holding it
+(defclass (Path [(typed-list-of Segment?) links]
+                [nonnegative-real? total-distance])
 
   ;; n-ary custom constructor function that takes the links
-  ;; making up a path:
+  ;; making up a Path:
   (def (path . links)
-       (_path (list->typed-list Segment? (reverse links))
-	      (fold + 0 (map .distance links))))
+       (Path (list->typed-list Segment? (reverse links))
+             (fold + 0 (map .distance links))))
 
   (defmethod (add s link)
-    (_path (.cons links link)
-	   (+ total-distance (.distance link))))
+    (Path (.cons links link)
+          (+ total-distance (.distance link))))
 
   ;; "first" link when looking backwards:
   (defmethod (first s)
@@ -72,7 +71,7 @@
 
 (TEST
  > (.show (path (Segment 'A 'B 10)))
- (_path (typed-list Segment? (Segment 'A 'B 10)) 10)
+ (Path (typed-list Segment? (Segment 'A 'B 10)) 10)
 
  ;; Had .view first, could drop it now... XX
  > (.view (path (Segment 'A 'B 10)))
@@ -85,21 +84,20 @@
 ;; The "frontier" (as called in the video) is the collection of paths
 ;; already taken.
 
-(defclass ((frontier _frontier)
-	   [wbcollection? pathcollection])
+(defclass (Frontier [wbcollection? pathcollection])
        
   (def (frontier . paths)
-       (_frontier (list.wbcollection path.distance-cmp paths)))
+       (Frontier (list.wbcollection Path.distance-cmp paths)))
 
   ;; remove-choice choses one of the paths, removes it from the
   ;; frontier and returns it
   (defmethod (remove-choice s)
     (letv ((min rest) (.min&rest pathcollection))
-	  (values min (_frontier rest))))
+	  (values min (Frontier rest))))
 
   (defmethod (add s path)
     (DEBUG (println "adding: " (=> path .first .to))
-	   (frontier.pathcollection-set s (.set pathcollection path))))
+	   (Frontier.pathcollection-set s (.set pathcollection path))))
 
   ;; delegates
   (defmethod list (comp .list .pathcollection))
@@ -123,15 +121,15 @@
 
 
 (def (treesearch [(list-of Segment?) links]
-		 [city? start]
-		 [city? end]) -> (maybe path?)
+		 [City? start]
+		 [City? end]) -> (maybe Path?)
 
      ;; all links away from a given city:
      (def links-for
 	  (let* ((links* (append links
 				 (map .reverse links)))
 		 (t (list->table (segregate* links* .from symbol<?))))
-	    (lambda ([city? c])
+	    (lambda ([City? c])
 	      (table-ref t c '()))))
 
      (let loop ((frontier (frontier (path (Segment start start 0))))
@@ -149,7 +147,7 @@
 			       (fold (lambda (a frontier)
 				       (if (.contains? visited (.to a))
 					   frontier
-					   (frontier.add frontier
+					   (Frontier.add frontier
 							 (.add path a))))
 				     frontier
 				     (links-for city))
