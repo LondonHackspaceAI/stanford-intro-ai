@@ -16,6 +16,8 @@
 ;; we use symbols to represent cities
 (def City? symbol?)
 (def. City.name symbol.string)
+(def (City= [City? a] [City? b])
+     (eq? a b))
 
 
 (defclass (Segment [City? from]
@@ -61,7 +63,7 @@
        ;; frontier value from treesearch; drop the
        ;; duplicate then.
        (if (and (length->= l 2)
-		(eq? (first l) (second l)))
+		(City= (first l) (second l)))
 	   (rest l)
 	   l))))
 
@@ -137,7 +139,7 @@
 	   (letv ((path front) (.remove-choice front))
 		 (let* ((s (.first path))
 			(city (.to s)))
-		   (if (eq? city end)
+		   (if (City= city end)
 		       path
 		       (DEBUG (println city)
 			      (loop
