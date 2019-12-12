@@ -34,11 +34,12 @@
                 [nonnegative-real? total-distance])
   "a list of path segments (edges)"
 
+  (def empty-Path (Path (typed-list-null Edge?) 0))
+  
   ;; n-ary custom constructor function that takes the links
   ;; making up a Path:
   (def (path . links)
-       (Path (list->typed-list Edge? (reverse links))
-             (fold + 0 (map .distance links))))
+       (fold (flip Path.add) empty-Path links))
 
   (defmethod (add s link)
     (Path (.cons links link)
