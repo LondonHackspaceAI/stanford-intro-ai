@@ -132,7 +132,6 @@
 
      (let loop ((frontier (frontier (path (Segment start start 0))))
 		(visited (empty-wbcollection symbol-cmp)))
-       ;;(step)
        (if (.empty? frontier)
 	   #f
 	   (letv ((path frontier) (.remove-choice frontier))
