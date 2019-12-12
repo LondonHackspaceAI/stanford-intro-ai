@@ -122,7 +122,8 @@
 
 (def (treesearch [(list-of Segment?) links]
 		 [City? start]
-		 [City? end]) -> (maybe Path?)
+		 [City? end])
+     -> (maybe Path?)
 
      ;; all links away from a given city:
      (def links-for
@@ -137,8 +138,7 @@
        (if (.empty? front)
 	   #f
 	   (letv ((path front) (.remove-choice front))
-		 (let* ((s (.first path))
-			(city (.to s)))
+		 (let (city (.to (.first path)))
 		   (if (City= city end)
 		       path
 		       (DEBUG (println city)
