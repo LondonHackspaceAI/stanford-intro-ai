@@ -20,24 +20,24 @@
      (eq? a b))
 
 
-(defclass (Segment [Node? from]
-                   [Node? to]
-                   [nonnegative-real? distance])
-  "a path segment between two nodes (edge)"
+(defclass (Edge [Node? from]
+                [Node? to]
+                [nonnegative-real? distance])
+  "a path segment between two nodes"
 
   (defmethod (reverse s)
     "swap start and end"
-    (Segment to from distance)))
+    (Edge to from distance)))
 
 
-(defclass (Path [(typed-list-of Segment?) links]
+(defclass (Path [(typed-list-of Edge?) links]
                 [nonnegative-real? total-distance])
-  "a list of Segments"
+  "a list of path segments (edges)"
 
   ;; n-ary custom constructor function that takes the links
   ;; making up a Path:
   (def (path . links)
-       (Path (list->typed-list Segment? (reverse links))
+       (Path (list->typed-list Edge? (reverse links))
              (fold + 0 (map .distance links))))
 
   (defmethod (add s link)
@@ -57,7 +57,7 @@
 		    ;; append fake link for end node to
 		    ;; make it show up:
 		    (let ((c (.to (.first links))))
-		      (list (Segment c c 0)))))))
+		      (list (Edge c c 0)))))))
        ;; if the first and second node are the same,
        ;; then that's because of the stupid initial
        ;; frontier value from treesearch; drop the
@@ -73,13 +73,13 @@
 
 
 (TEST
- > (.show (path (Segment 'A 'B 10)))
- (Path (typed-list Segment? (Segment 'A 'B 10)) 10)
+ > (.show (path (Edge 'A 'B 10)))
+ (Path (typed-list Edge? (Edge 'A 'B 10)) 10)
 
  ;; Had .view first, could drop it now... XX
- > (.view (path (Segment 'A 'B 10)))
+ > (.view (path (Edge 'A 'B 10)))
  (10 (A B))
- > (.view (path (Segment 'A 'B 10) (Segment 'B 'C 4.5)))
+ > (.view (path (Edge 'A 'B 10) (Edge 'B 'C 4.5)))
  (14.5 (A B C)))
 
 
@@ -105,9 +105,9 @@
 
 
 (TEST
- > (def f (frontier (path (Segment 'A 'B 3))
-		    (path (Segment 'A 'C 2))
-		    (path (Segment 'A 'D 2.5))))
+ > (def f (frontier (path (Edge 'A 'B 3))
+		    (path (Edge 'A 'C 2))
+		    (path (Edge 'A 'D 2.5))))
  > (defvalues (p f*) (.remove-choice f))
  > (.view p)
  (2 (A C))
@@ -123,7 +123,7 @@
 (def (frontier-update [Frontier? front]
                       [wbcollection? visited] ;; nodes
                       [Path? path]
-                      [(list-of Segment?) links])
+                      [(list-of Edge?) links])
      -> Frontier?
 
      (fold (lambda (a front)
@@ -135,7 +135,7 @@
            links))
 
 
-(def (treesearch [(list-of Segment?) links]
+(def (treesearch [(list-of Edge?) links]
 		 [Node? start]
 		 [Node? end])
      -> (maybe Path?)
@@ -145,10 +145,10 @@
 	  (let* ((links* (append links
 				 (map .reverse links)))
 		 (t (list->table (segregate* links* .from symbol<?))))
-	    (lambda ([Node? c]) -> (list-of Segment?)
+	    (lambda ([Node? c]) -> (list-of Edge?)
                (table-ref t c '()))))
 
-     (let loop ((front (frontier (path (Segment start start 0))))
+     (let loop ((front (frontier (path (Edge start start 0))))
 		(visited (empty-wbcollection symbol-cmp)))
        (if (.empty? front)
 	   #f
@@ -167,12 +167,12 @@
 (def treesearch* (comp// 3 .view treesearch))
 
 
-(def (lists->Segments l)
-     (map (applying Segment) l))
+(def (lists->Edges l)
+     (map (applying Edge) l))
 
 
 (def (treesearch** ls a b)
-     (treesearch* (lists->Segments ls) a b))
+     (treesearch* (lists->Edges ls) a b))
 
 (TEST
  > (treesearch** '() 'A 'B)

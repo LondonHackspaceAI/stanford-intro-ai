@@ -10,9 +10,9 @@
 (def. (symbol.julia-string s)
   (string.julia-string (symbol.string s)))
 
-(def. (Segment.julia-string l)
+(def. (Edge.julia-string l)
   (let. ((from to distance) l)
-	(string-append "Segment(Node("
+	(string-append "Edge(Node("
 		       (.julia-string from)
 		       "), Node("
 		       (.julia-string to)

@@ -11,9 +11,9 @@
 (def. (Node.go-string s)
   (string.go-string (Node.name s)))
 
-(def. (Segment.go-string l)
+(def. (Edge.go-string l)
   (let. ((from to distance) l)
-	(string-append "Segment{Node{"
+	(string-append "Edge{Node{"
 		       (.go-string from)
 		       "}, Node{"
 		       (.go-string to)
@@ -22,14 +22,14 @@
 		       "}")))
 
 (def. (Path.go-string p)
-  (string-append "Path{Segment[]{"
+  (string-append "Path{Edge[]{"
 		 (strings-join (map .go-string (.list (.links p)))
 			       ", ")
 		 "}}"))
 
 (TEST
- > (.go-string (Path (Segment 'A 'B 10)))
- "Path{Segment[]{Segment{Node{\"A\"}, Node{\"B\"}, 10}}}")
+ > (.go-string (Path (Edge 'A 'B 10)))
+ "Path{Edge[]{Edge{Node{\"A\"}, Node{\"B\"}, 10}}}")
 
 
 (def (links->go links)

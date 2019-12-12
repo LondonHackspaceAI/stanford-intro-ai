@@ -5,7 +5,7 @@
 ;; to save typing effort, enter values as a list of bare lists, then
 ;; convert them to citylink objects
 (def links
-     (lists->Segments
+     (lists->Edges
       '((Arad Zerind 75)
 	(Arad Sibiu 140)
 	(Arad Timisoara 118)

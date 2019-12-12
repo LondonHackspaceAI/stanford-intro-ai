@@ -11,9 +11,9 @@
 (def. (symbol.haskell-string s)
   (string.haskell-string (symbol.string s)))
 
-(def. (Segment.haskell-string l)
+(def. (Edge.haskell-string l)
   (let. ((from to distance) l)
-	(string-append "(Segment (Node "
+	(string-append "(Edge (Node "
 		       (.haskell-string from)
 		       ") (Node "
 		       (.haskell-string to)
