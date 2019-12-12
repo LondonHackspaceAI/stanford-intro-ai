@@ -18,6 +18,8 @@
 (def. Node.name symbol.string)
 (def (Node= [Node? a] [Node? b])
      (eq? a b))
+(def Node< symbol<?)
+(def Node-cmp symbol-cmp)
 
 
 (defclass (Edge [Node? from]
@@ -146,12 +148,12 @@
 	  (let (t (list->table (segregate* (append edges
                                                    (map .reverse edges))
                                            .from
-                                           symbol<?)))
+                                           Node<)))
 	    (lambda ([Node? c]) -> (list-of Edge?)
                (table-ref t c '()))))
 
      (let loop ((front (frontier (path (Edge start start 0))))
-		(visited (empty-wbcollection symbol-cmp)))
+		(visited (empty-wbcollection Node-cmp)))
        ;; -> (maybe Path?)
        (if (.empty? front)
 	   #f
