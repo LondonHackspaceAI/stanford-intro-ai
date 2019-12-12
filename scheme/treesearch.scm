@@ -143,9 +143,10 @@
 
      ;; all edges away from a given node:
      (def edges-for
-	  (let* ((edges* (append edges
-				 (map .reverse edges)))
-		 (t (list->table (segregate* edges* .from symbol<?))))
+	  (let (t (list->table (segregate* (append edges
+                                                   (map .reverse edges))
+                                           .from
+                                           symbol<?)))
 	    (lambda ([Node? c]) -> (list-of Edge?)
                (table-ref t c '()))))
 
