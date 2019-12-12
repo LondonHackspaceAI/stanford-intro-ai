@@ -151,6 +151,7 @@
 
      (let loop ((front (frontier (path (Edge start start 0))))
 		(visited (empty-wbcollection symbol-cmp)))
+       ;; -> (maybe Path?)
        (if (.empty? front)
 	   #f
 	   (letv ((path front) (.remove-choice front))
