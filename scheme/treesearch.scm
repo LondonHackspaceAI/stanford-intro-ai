@@ -120,6 +120,21 @@
 
 
 
+(def (frontier-update [Frontier? front]
+                      [wbcollection? visited] ;; cities
+                      [Path? path]
+                      [(list-of Segment?) links])
+     -> Frontier?
+
+     (fold (lambda (a front)
+             (if (.contains? visited (.to a))
+                 front
+                 (Frontier.add front
+                               (.add path a))))
+           front
+           links))
+
+
 (def (treesearch [(list-of Segment?) links]
 		 [City? start]
 		 [City? end])
@@ -130,8 +145,8 @@
 	  (let* ((links* (append links
 				 (map .reverse links)))
 		 (t (list->table (segregate* links* .from symbol<?))))
-	    (lambda ([City? c])
-	      (table-ref t c '()))))
+	    (lambda ([City? c]) -> (list-of Segment?)
+               (table-ref t c '()))))
 
      (let loop ((front (frontier (path (Segment start start 0))))
 		(visited (empty-wbcollection symbol-cmp)))
@@ -142,15 +157,11 @@
 		   (if (City= city end)
 		       path
 		       (DEBUG (println city)
-			      (loop
-			       (fold (lambda (a front)
-				       (if (.contains? visited (.to a))
-					   front
-					   (Frontier.add front
-							 (.add path a))))
-				     front
-				     (links-for city))
-			       (.set visited city)))))))))
+			      (loop (frontier-update front
+                                                     visited
+                                                     path
+                                                     (links-for city))
+                                    (.set visited city)))))))))
 
 
 (def treesearch* (comp// 3 .view treesearch))
