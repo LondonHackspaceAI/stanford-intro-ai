@@ -18,19 +18,19 @@
 (def. City.name symbol.string)
 
 
-;; a Segment is a path segment between two cities
 (defclass (Segment [City? from]
                    [City? to]
                    [nonnegative-real? distance])
+  "a path segment between two cities"
 
-  ;; swap start and end
   (defmethod (reverse s)
+    "swap start and end"
     (Segment to from distance)))
 
 
-;; a Path is a list of Segments; define an object holding it
 (defclass (Path [(typed-list-of Segment?) links]
                 [nonnegative-real? total-distance])
+  "a list of Segments"
 
   ;; n-ary custom constructor function that takes the links
   ;; making up a Path:
@@ -42,8 +42,8 @@
     (Path (.cons links link)
           (+ total-distance (.distance link))))
 
-  ;; "first" link when looking backwards:
   (defmethod (first s)
+    "'first' link as when looking backwards"
     (.first links))
 
   (defmethod (view s)
@@ -66,7 +66,8 @@
 	   l))))
 
   ;; compare two paths, returning lt eq gt
-  (defmethod distance-cmp (on .total-distance number-cmp)))
+  (defmethod distance-cmp
+    (on .total-distance number-cmp)))
 
 
 (TEST
@@ -81,17 +82,14 @@
 
 
 
-;; The "frontier" (as called in the video) is the collection of paths
-;; already taken.
-
 (defclass (Frontier [wbcollection? pathcollection])
-       
+  "the collection of paths already taken."
+
   (def (frontier . paths)
        (Frontier (list.wbcollection Path.distance-cmp paths)))
 
-  ;; remove-choice choses one of the paths, removes it from the
-  ;; frontier and returns it
   (defmethod (remove-choice s)
+    "choses one of the paths, removes it from the frontier and returns it"
     (letv ((min rest) (.min&rest pathcollection))
 	  (values min (Frontier rest))))
 
