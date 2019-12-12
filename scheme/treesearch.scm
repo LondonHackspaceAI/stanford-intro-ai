@@ -112,6 +112,13 @@
 		    (path (Edge 'A 'C 2))
 		    (path (Edge 'A 'D 2.5))))
  > (defvalues (p f*) (.remove-choice f))
+ > (.show p)
+ (Path (typed-list Edge? (Edge 'A 'C 2)) 2)
+ > (.show f*)
+ (Frontier (list.wbcollection
+            Path.distance-cmp
+            (list (Path (typed-list Edge? (Edge 'A 'D 2.5)) 2.5)
+                  (Path (typed-list Edge? (Edge 'A 'B 3)) 3))))
  > (.view p)
  (2 (A C))
  > (map .view (.list f*))
