@@ -15,6 +15,9 @@ The solution in scheme/ was at some point the most complete, with the
 newest algorithm, optimizations, and rather extensive tests (the one
 in haskell/ is equivalent).
 
+None of these have seen any testing with large graphs. Consider that a
+TODO.
+
 ## Links
 
 *  "Intro to AI - Introduction to Artificial Intelligence": [www.ai-class.com](http://www.ai-class.com/), redirects to [Udacity](https://www.udacity.com/course/intro-to-artificial-intelligence--cs271) (Instructors: Peter Norvig, Sebastian Thrun)
