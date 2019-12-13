@@ -52,23 +52,22 @@
     (.first edges))
 
   (defmethod (view s)
-    (list
-     total-distance
-     (let ((l (map .from
-		   (.reverse-list
-		    edges
-		    ;; append fake edge for end node to
-		    ;; make it show up:
-		    (let ((c (.to (.first edges))))
-		      (list (Edge c c 0)))))))
-       ;; if the first and second node are the same,
-       ;; then that's because of the stupid initial
-       ;; frontier value from treesearch; drop the
-       ;; duplicate then.
-       (if (and (length->= l 2)
-		(Node= (first l) (second l)))
-	   (rest l)
-	   l))))
+    (list total-distance
+          (let ((l (map .from
+                        (.reverse-list
+                         edges
+                         ;; append fake edge for end node to
+                         ;; make it show up:
+                         (let ((c (.to (.first edges))))
+                           (list (Edge c c 0)))))))
+            ;; if the first and second node are the same,
+            ;; then that's because of the stupid initial
+            ;; frontier value from treesearch; drop the
+            ;; duplicate then.
+            (if (and (length->= l 2)
+                     (Node= (first l) (second l)))
+                (rest l)
+                l))))
 
   ;; compare two paths, returning lt eq gt
   (defmethod distance-cmp
