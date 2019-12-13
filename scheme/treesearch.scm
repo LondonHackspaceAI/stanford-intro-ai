@@ -6,6 +6,18 @@
 	 cj-seen
 	 wbcollection)
 
+;; XX move to lib
+(defmacro (if-letv bind yes no)
+  (mcase bind
+         (`(`vars `expr)
+          (with-gensym
+           VS
+           `(cond (,expr
+                   => (lambda (,VS)
+                        (letv (,vars ,VS)
+                              ,yes)))
+                  (else ,no))))))
+
 
 (defmacro (DEBUG dbg . body)
   (if #t
@@ -92,10 +104,11 @@
   (def (frontier . paths)
        (Frontier (list.wbcollection Path.distance-cmp paths)))
 
-  (defmethod (remove-choice s)
+  (defmethod (maybe-remove-choice s)
     "choses one of the paths, removes it from the frontier and returns it"
-    (letv ((min rest) (.min&rest pathcollection))
-	  (values min (Frontier rest))))
+    (and (not (.empty? pathcollection))
+         (letv ((min rest) (.min&rest pathcollection))
+               (values min (Frontier rest)))))
 
   (defmethod (add s path)
     (DEBUG (println "adding: " (=> path .first .to))
@@ -110,7 +123,7 @@
  > (def f (frontier (path (Edge 'A 'B 3))
 		    (path (Edge 'A 'C 2))
 		    (path (Edge 'A 'D 2.5))))
- > (defvalues (p f*) (.remove-choice f))
+ > (defvalues (p f*) (.maybe-remove-choice f))
  > (.show p)
  (Path (typed-list Edge? (Edge 'A 'C 2)) 2)
  > (.show f*)
@@ -161,18 +174,17 @@
      (let loop ((front (frontier (path (Edge start start 0))))
 		(visited (empty-wbcollection Node-cmp)))
        ;; -> (maybe Path?)
-       (if (.empty? front)
-	   #f
-	   (letv ((path front) (.remove-choice front))
-		 (let (node (.to (.first path)))
-		   (if (Node= node end)
-		       path
-		       (DEBUG (println node)
-			      (loop (frontier-update front
-                                                     visited
-                                                     path
-                                                     (edges-for node))
-                                    (.set visited node)))))))))
+       (if-letv ((path front) (.maybe-remove-choice front))
+                (let (node (.to (.first path)))
+                  (if (Node= node end)
+                      path
+                      (DEBUG (println node)
+                             (loop (frontier-update front
+                                                    visited
+                                                    path
+                                                    (edges-for node))
+                                   (.set visited node)))))
+                #f)))
 
 
 (def treesearch* (comp// 3 .view treesearch))
