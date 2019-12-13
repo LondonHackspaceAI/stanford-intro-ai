@@ -281,6 +281,21 @@ tests= test
     (ts es "Bucharest" "Arad")
     (Just (418,["Bucharest","Pitesti","RimnicuVilcea","Sibiu","Arad"]))
 
+  
+  , assertEqual ""
+    (ts es "Lugoj" "Sibiu")
+    (Just (369,["Lugoj", "Timisoara", "Arad", "Sibiu"]))
+  , assertEqual ""
+    (ts es "Mehadia" "Sibiu")
+    (Just (421,["Mehadia", "Drobeta", "Craiova", "RimnicuVilcea", "Sibiu"]))
+  , assertEqual ""
+    (ts es "Mehadia" "Fagaras")
+    (Just (520,["Mehadia", "Drobeta", "Craiova", "RimnicuVilcea", "Sibiu",
+                "Fagaras"]))
+  , assertEqual ""
+    (ts es "Drobeta" "Neamt")
+    (Just (765,["Drobeta", "Craiova", "Pitesti", "Bucharest", "Urziceni",
+                "Vaslui", "Iasi", "Neamt"]))
   ];
 
 t = runTestTT tests
