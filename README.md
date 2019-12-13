@@ -5,11 +5,11 @@ while [we](https://github.com/LondonHackspaceAI/) started going
 through it. Some of us then got side tracked into trying it out in
 various programming languages.
 
-There's two algorithms implemented in the examples:
+There's two different algorithms implemented in the examples:
 
-* looking at the number of segments only: ?
+* looking at the number of segments only: julia?, golang?, elang?,
 
-* looking at distance in kilometers: scheme/, haskell/, ?
+* looking at distance in kilometers: scheme, haskell, cpp?
 
 The solution in scheme/ was at some point the most complete, with the
 newest algorithm, optimizations, and rather extensive tests (the one
