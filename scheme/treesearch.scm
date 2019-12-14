@@ -12,11 +12,10 @@
          (`(`vars `expr)
           (with-gensym
            VS
-           `(cond (,expr
-                   => (lambda (,VS)
-                        (letv (,vars ,VS)
-                              ,yes)))
-                  (else ,no))))))
+           `(if-let ((,VS ,expr))
+                    (letv (,vars ,VS)
+                          ,yes)
+                    ,no)))))
 
 
 (defmacro (DEBUG dbg . body)
