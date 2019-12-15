@@ -1,6 +1,6 @@
 (require easy
-	 treesearch
-	 test)
+         treesearch
+         test)
 
 (def. (number.go-string s)
   (number->string s))
@@ -22,9 +22,9 @@
 
 (def.* (Path.go-string p)
   (string-append "Path{Edge[]{"
-		 (strings-join (map .go-string (.list edges))
-			       ", ")
-		 "}}"))
+                 (strings-join (map .go-string (.list edges))
+                               ", ")
+                 "}}"))
 
 (TEST
  > (.go-string (path (Edge 'A 'B 10)))

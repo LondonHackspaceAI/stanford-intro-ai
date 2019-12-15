@@ -1,8 +1,8 @@
 (require easy
          typed-list
-	 (list-util-2 segregate*)
-	 (predicates nonnegative-real? length->= box-of)
-	 wbcollection
+         (list-util-2 segregate*)
+         (predicates nonnegative-real? length->= box-of)
+         wbcollection
          debug
          maybe
          test)
@@ -104,8 +104,8 @@
 
 (TEST
  > (def f (frontier (path (Edge 'A 'B 3))
-		    (path (Edge 'A 'C 2))
-		    (path (Edge 'A 'D 2.5))))
+                    (path (Edge 'A 'C 2))
+                    (path (Edge 'A 'D 2.5))))
  > (def-values (p f*) (.maybe-remove-choice f))
  > (.show p)
  (Path (typed-list Edge? (Edge 'A 'C 2)) 2)
@@ -141,17 +141,17 @@
 
 
 (def (treesearch [(list-of Edge?) edges]
-		 [Node? start]
-		 [Node? end])
+                 [Node? start]
+                 [Node? end])
      -> (maybe Path?)
 
      ;; all edges away from a given node:
      (def edges-for
-	  (let (t (list->table (segregate* (append edges
+          (let (t (list->table (segregate* (append edges
                                                    (map .reverse edges))
                                            .from
                                            Node<)))
-	    (lambda ([Node? c]) -> (list-of Edge?)
+            (lambda ([Node? c]) -> (list-of Edge?)
                (table-ref t c '()))))
 
      (let search ((front (frontier (path (Edge start start 0))))
