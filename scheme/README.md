@@ -17,11 +17,11 @@ To run:
 
 To run a search:
 
-    > (treesearch links* 'Arad 'Bucharest)
+    > (.show (treesearch links 'Arad 'Bucharest))
 
 With nicer view of the resulting path:
 
-    > (treesearch* links* 'Arad 'Bucharest)
+    > (treesearch* links 'Arad 'Bucharest)
 
 To run the tests:
 
