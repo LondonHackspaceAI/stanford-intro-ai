@@ -88,12 +88,11 @@
   (def (frontier . paths)
        (Frontier (list.wbcollection Path.distance-cmp paths)))
 
-  (defmethod (maybe-remove-choice s)
+  (defmethod (maybe-remove-choice s) -> (maybe (values-of Path? Frontier?))
     "choses one of the paths, removes it from the frontier and returns it"
-    (in-monad maybe
-              (>>= (.maybe-min&rest pathcollection)
-                   (lambda-values ((min rest))
-                             (return (values min (Frontier rest)))))))
+    (>>= (.maybe-min&rest pathcollection)
+         (lambda-values ((min rest))
+                   (return (values min (Frontier rest))))))
 
   (defmethod (add s path)
     (DEBUG "adding:" (=> path .first .to))
@@ -155,8 +154,6 @@
                                            Node<)))
 	    (lambda ([Node? c]) -> (list-of Edge?)
                (table-ref t c '()))))
-
-     (use-monad maybe)
 
      (let search ((front (frontier (path (Edge start start 0))))
                   (visited (empty-wbcollection Node-cmp)))
