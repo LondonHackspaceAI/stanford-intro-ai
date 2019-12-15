@@ -2,11 +2,10 @@
          typed-list
 	 (list-util-2 segregate*)
 	 (predicates nonnegative-real? length->= box-of)
-	 test
-	 cj-seen
 	 wbcollection
          debug
-         maybe)
+         maybe
+         test)
 
 
 ;; we use symbols to represent nodes
