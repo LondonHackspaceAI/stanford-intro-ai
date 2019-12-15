@@ -115,15 +115,14 @@ treesearch edges start end =
   where
     search :: Frontier -> Set.Set Node -> Maybe Path
     search front visited =
-      case frontierRemoveChoice front of
-        Just (path, front') ->
+      frontierRemoveChoice front >>=
+       (\(path, front') ->
           let node = edgeTo $ pathHead path in
             if node == end then
               Just path
             else
               search (frontierUpdate front' visited path (edgesFor node))
-                     (Set.insert node visited)
-        Nothing -> Nothing
+                     (Set.insert node visited))
 
     edgesFor :: Node -> [Edge]
     edgesFor =
