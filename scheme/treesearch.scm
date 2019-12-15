@@ -1,21 +1,11 @@
 (require easy
+         (if-let if-letv)
 	 typed-list
 	 (list-util-2 segregate*)
 	 (predicates nonnegative-real? length->= box-of)
 	 test
 	 cj-seen
 	 wbcollection)
-
-;; XX move to lib
-(defmacro (if-letv bind yes no)
-  (mcase bind
-         (`(`vars `expr)
-          (with-gensym
-           VS
-           `(if-let ((,VS ,expr))
-                    (letv (,vars ,VS)
-                          ,yes)
-                    ,no)))))
 
 
 (defmacro (DEBUG dbg . body)
