@@ -11,30 +11,35 @@
 (def. (Node.go-string s)
   (string.go-string (Node.name s)))
 
-(def. (Edge.go-string l)
-  (let. ((from to distance) l)
-	(string-append "Edge{Node{"
-		       (.go-string from)
-		       "}, Node{"
-		       (.go-string to)
-		       "}, "
-		       (.go-string distance)
-		       "}")))
+(def.* (Edge.go-string l)
+  (string-append "Edge{Node{"
+                 (.go-string from)
+                 "}, Node{"
+                 (.go-string to)
+                 "}, "
+                 (.go-string distance)
+                 "}"))
 
-(def. (Path.go-string p)
+(def.* (Path.go-string p)
   (string-append "Path{Edge[]{"
-		 (strings-join (map .go-string (.list (.links p)))
+		 (strings-join (map .go-string (.list edges))
 			       ", ")
 		 "}}"))
 
 (TEST
- > (.go-string (Path (Edge 'A 'B 10)))
+ > (.go-string (path (Edge 'A 'B 10)))
  "Path{Edge[]{Edge{Node{\"A\"}, Node{\"B\"}, 10}}}")
 
 
-(def (links->go links)
-     (string-append "a = ["
-		    (strings-join (map .go-string links)
-				  ",\n     ")
-		    "]"))
+(def Edges? (nonempty-list-of Edge?))
+
+(def. (Edges.go-string edges)
+  (string-append "a = ["
+                 (strings-join (map .go-string edges)
+                               ",\n     ")
+                 "]"))
+
+(TEST
+ > (.go-string (list (Edge 'A 'B 10) (Edge 'C 'D 5)))
+ "a = [Edge{Node{\"A\"}, Node{\"B\"}, 10},\n     Edge{Node{\"C\"}, Node{\"D\"}, 5}]")
 
