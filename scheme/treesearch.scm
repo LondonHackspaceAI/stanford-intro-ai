@@ -158,8 +158,8 @@
 
      (use-monad maybe)
 
-     (let loop ((front (frontier (path (Edge start start 0))))
-		(visited (empty-wbcollection Node-cmp)))
+     (let search ((front (frontier (path (Edge start start 0))))
+                  (visited (empty-wbcollection Node-cmp)))
        (>>= (.maybe-remove-choice front)
             (lambda-values
              ((path front)) 
@@ -167,11 +167,11 @@
                (if (Node= node end)
                    (return path)
                    (begin (DEBUG node)
-                          (loop (frontier-update front
-                                                 visited
-                                                 path
-                                                 (edges-for node))
-                                (.set visited node)))))))))
+                          (search (frontier-update front
+                                                   visited
+                                                   path
+                                                   (edges-for node))
+                                  (.set visited node)))))))))
 
 
 (def treesearch* (comp// 3 .view treesearch))
