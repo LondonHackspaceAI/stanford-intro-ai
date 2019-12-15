@@ -1,12 +1,12 @@
 (require easy
-         (if-let if-letv)
-	 typed-list
+         typed-list
 	 (list-util-2 segregate*)
 	 (predicates nonnegative-real? length->= box-of)
 	 test
 	 cj-seen
 	 wbcollection
-         debug)
+         debug
+         maybe)
 
 
 ;; we use symbols to represent nodes
@@ -90,9 +90,10 @@
 
   (defmethod (maybe-remove-choice s)
     "choses one of the paths, removes it from the frontier and returns it"
-    (and (not (.empty? pathcollection))
-         (letv ((min rest) (.min&rest pathcollection))
-               (values min (Frontier rest)))))
+    (in-monad maybe
+              (>>= (.maybe-min&rest pathcollection)
+                   (lambda-values ((min rest))
+                             (return (values min (Frontier rest)))))))
 
   (defmethod (add s path)
     (DEBUG "adding:" (=> path .first .to))
@@ -155,20 +156,22 @@
 	    (lambda ([Node? c]) -> (list-of Edge?)
                (table-ref t c '()))))
 
+     (use-monad maybe)
+
      (let loop ((front (frontier (path (Edge start start 0))))
 		(visited (empty-wbcollection Node-cmp)))
-       ;; -> (maybe Path?)
-       (if-letv ((path front) (.maybe-remove-choice front))
-                (let (node (.to (.first path)))
-                  (if (Node= node end)
-                      path
-                      (begin (DEBUG node)
-                             (loop (frontier-update front
-                                                    visited
-                                                    path
-                                                    (edges-for node))
-                                   (.set visited node)))))
-                #f)))
+       (>>= (.maybe-remove-choice front)
+            (lambda-values
+             ((path front)) 
+             (let (node (.to (.first path)))
+               (if (Node= node end)
+                   (return path)
+                   (begin (DEBUG node)
+                          (loop (frontier-update front
+                                                 visited
+                                                 path
+                                                 (edges-for node))
+                                (.set visited node)))))))))
 
 
 (def treesearch* (comp// 3 .view treesearch))
