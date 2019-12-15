@@ -1,5 +1,8 @@
-This requires the Gambit-C Scheme system, version 4.5.3 (perhaps other
-versions will work, too, but then quite likely not.)
+This requires the Gambit-C Scheme system with some patches as
+available [here](https://github.com/pflanze/gambc.git); on a Debian
+(perhaps Ubuntu) system it can easily be installed via
+[chjize](https://github.com/pflanze/chjize) by following the
+instructions there then running `make gambit`.
 
 This code has only been tested on Debian Linux.
 
