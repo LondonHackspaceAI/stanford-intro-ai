@@ -23,11 +23,6 @@ With nicer view of the resulting path:
 
     > (treesearch* links* 'Arad 'Bucharest)
 
-To only run the tests in treesearch.scm:
+To run the tests:
 
-    > (run-tests "treesearch")
-
-To run all the tests:
-
-    > (run-tests)
-
+    > (run-tests ".")
