@@ -74,7 +74,7 @@
  > (.show (path (Edge 'A 'B 10)))
  (Path (typed-list Edge? (Edge 'A 'B 10)) 10)
 
- ;; Had .view first, could drop it now... XX
+ ;; Had .view first, and it's still producing shorter output
  > (.view (path (Edge 'A 'B 10)))
  (10 (A B))
  > (.view (path (Edge 'A 'B 10) (Edge 'B 'C 4.5)))
