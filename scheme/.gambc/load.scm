@@ -217,7 +217,7 @@
   '(/load "lib/csv-defaults")
   '(/load "lib/posix/interrupts")
   '(/load "lib/data-compressor")
-  '(/load "lib/debug")
+  (/load "lib/debug")
   '(/load "lib/debuggable-promise-everywhere")
   '(/load "lib/delimcc-simple")
   '(/load "lib/delimcc-simple-test")

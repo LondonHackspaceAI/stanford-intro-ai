@@ -26,3 +26,9 @@ With nicer view of the resulting path:
 To run the tests:
 
     > (run-tests ".")
+
+To see debugging output, set :
+
+    > (set! *debug* 1)
+    > (run-tests ".")
+

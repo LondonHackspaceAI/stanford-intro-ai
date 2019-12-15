@@ -5,13 +5,8 @@
 	 (predicates nonnegative-real? length->= box-of)
 	 test
 	 cj-seen
-	 wbcollection)
-
-
-(defmacro (DEBUG dbg . body)
-  (if #t
-      `(begin ,dbg ,@body)
-      `(begin ,@body)))
+	 wbcollection
+         debug)
 
 
 ;; we use symbols to represent nodes
@@ -100,8 +95,8 @@
                (values min (Frontier rest)))))
 
   (defmethod (add s path)
-    (DEBUG (println "adding: " (=> path .first .to))
-	   (Frontier.pathcollection-set s (.set pathcollection path))))
+    (DEBUG "adding:" (=> path .first .to))
+    (Frontier.pathcollection-set s (.set pathcollection path)))
 
   ;; delegates
   (defmethod list (comp .list .pathcollection))
@@ -167,7 +162,7 @@
                 (let (node (.to (.first path)))
                   (if (Node= node end)
                       path
-                      (DEBUG (println node)
+                      (begin (DEBUG node)
                              (loop (frontier-update front
                                                     visited
                                                     path
