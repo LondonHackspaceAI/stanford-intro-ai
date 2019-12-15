@@ -72,7 +72,7 @@
 
   ;; compare two paths, returning lt eq gt
   (defmethod distance-cmp
-    (on .total-distance number-cmp)))
+    (on .total-distance real-cmp)))
 
 
 (TEST
@@ -112,7 +112,7 @@
  > (def f (frontier (path (Edge 'A 'B 3))
 		    (path (Edge 'A 'C 2))
 		    (path (Edge 'A 'D 2.5))))
- > (defvalues (p f*) (.maybe-remove-choice f))
+ > (def-values (p f*) (.maybe-remove-choice f))
  > (.show p)
  (Path (typed-list Edge? (Edge 'A 'C 2)) 2)
  > (.show f*)
