@@ -177,60 +177,60 @@
      (map (applying Edge) l))
 
 
-(def (treesearch** ls a b)
+(def (ts ls a b)
      (treesearch* (lists->Edges ls) a b))
 
 (TEST
- > (treesearch** '() 'A 'B)
+ > (ts '() 'A 'B)
  #f
- > (treesearch** '((A C 3)) 'A 'B)
+ > (ts '((A C 3)) 'A 'B)
  #f ;; looped before seen check
- > (treesearch** '((C B 3)) 'A 'B)
+ > (ts '((C B 3)) 'A 'B)
  #f
- > (treesearch** '((X Y 3)) 'A 'B)
+ > (ts '((X Y 3)) 'A 'B)
  #f
- > (treesearch** '((A A 3)) 'A 'B)
+ > (ts '((A A 3)) 'A 'B)
  #f ;; looped before seen check
- > (treesearch** '((A B 3)) 'A 'B)
+ > (ts '((A B 3)) 'A 'B)
  (3 (A B))
- > (treesearch** '((B A 3)) 'A 'B)
+ > (ts '((B A 3)) 'A 'B)
  (3 (A B))
 
  ;; multiple direct paths
- > (treesearch** '((B A 3) (B A 2)) 'A 'B)
+ > (ts '((B A 3) (B A 2)) 'A 'B)
  (2 (A B))
- > (treesearch** '((B A 3) (A B 2)) 'A 'B)
+ > (ts '((B A 3) (A B 2)) 'A 'B)
  (2 (A B))
- > (treesearch** '((A B 3) (B A 2)) 'A 'B)
+ > (ts '((A B 3) (B A 2)) 'A 'B)
  (2 (A B))
- > (treesearch** '((A B 3) (A B 2)) 'A 'B)
+ > (ts '((A B 3) (A B 2)) 'A 'B)
  (2 (A B))
 
  ;; unused paths
- > (treesearch** '((A B 3) (B C 2)) 'A 'B)
+ > (ts '((A B 3) (B C 2)) 'A 'B)
  (3 (A B))
- > (treesearch** '((A B 3) (B C 2)) 'B 'A)
+ > (ts '((A B 3) (B C 2)) 'B 'A)
  (3 (B A))
 
  ;; multi-segment
- > (treesearch** '((A B 3) (B C 2)) 'A 'C)
+ > (ts '((A B 3) (B C 2)) 'A 'C)
  (5 (A B C))
- > (treesearch** '((A B 3) (B C 2)) 'C 'A)
+ > (ts '((A B 3) (B C 2)) 'C 'A)
  (5 (C B A))
 
  ;; with alternatives: same length
- > (treesearch** '((A B 3) (B C 2) (A C 5)) 'A 'C)
+ > (ts '((A B 3) (B C 2) (A C 5)) 'A 'C)
  (5 (A B C))
- > (treesearch** '((A B 3) (B C 2) (A C 5)) 'C 'A)
+ > (ts '((A B 3) (B C 2) (A C 5)) 'C 'A)
  (5 (C B A))
 
- > (treesearch** '((A C 5) (A B 3) (B C 2)) 'A 'C)
+ > (ts '((A C 5) (A B 3) (B C 2)) 'A 'C)
  (5 (A B C)) ;; it prefers to take the shorter path first. right?
 
  ;; with alternative of shorter length
- > (treesearch** '((A C 4) (A B 3) (B C 2)) 'A 'C)
+ > (ts '((A C 4) (A B 3) (B C 2)) 'A 'C)
  (4 (A C))
- > (treesearch** '((A C 4) (A B 3) (B C 2)) 'C 'A)
+ > (ts '((A C 4) (A B 3) (B C 2)) 'C 'A)
  (4 (C A))
 
  ;; Now for all of these (that already have them): add random
