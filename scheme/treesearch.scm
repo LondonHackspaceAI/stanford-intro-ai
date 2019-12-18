@@ -1,10 +1,10 @@
 (require easy
-         typed-list
          (list-util-2 segregate*)
          (predicates nonnegative-real? length->= box-of)
          wbcollection
          debug
          maybe
+         oo-util-lazy
          test)
 
 
@@ -27,11 +27,11 @@
     (Edge to from distance)))
 
 
-(defclass (Path [(typed-list-of Edge?) edges]
+(defclass (Path [(ilist-of Edge?) edges]
                 [nonnegative-real? total-distance])
   "a list of path segments (edges)"
 
-  (def empty-Path (Path (typed-list-null Edge?) 0))
+  (def empty-Path (Path '() 0))
   
   ;; n-ary custom constructor function that takes the edges
   ;; making up a Path:
@@ -49,7 +49,7 @@
   (defmethod (view s)
     (list total-distance
           (let ((l (map .from
-                        (.reverse-list
+                        (reverse/tail
                          edges
                          ;; append fake edge for end node to
                          ;; make it show up:
@@ -71,7 +71,7 @@
 
 (TEST
  > (.show (path (Edge 'A 'B 10)))
- (Path (typed-list Edge? (Edge 'A 'B 10)) 10)
+ (Path (list (Edge 'A 'B 10)) 10)
 
  ;; Had .view first, and it's still producing shorter output
  > (.view (path (Edge 'A 'B 10)))
@@ -108,12 +108,12 @@
                     (path (Edge 'A 'D 2.5))))
  > (def-values (p f*) (.maybe-remove-choice f))
  > (.show p)
- (Path (typed-list Edge? (Edge 'A 'C 2)) 2)
+ (Path (list (Edge 'A 'C 2)) 2)
  > (.show f*)
  (Frontier (list.wbcollection
             Path.distance-cmp
-            (list (Path (typed-list Edge? (Edge 'A 'D 2.5)) 2.5)
-                  (Path (typed-list Edge? (Edge 'A 'B 3)) 3))))
+            (list (Path (list (Edge 'A 'D 2.5)) 2.5)
+                  (Path (list (Edge 'A 'B 3)) 3))))
  > (.view p)
  (2 (A C))
  > (map .view (.list f*))
@@ -128,7 +128,7 @@
 (def (frontier-update [Frontier? front]
                       [wbcollection? visited] ;; nodes
                       [Path? path]
-                      [(list-of Edge?) edges])
+                      [(ilist-of Edge?) edges])
      -> Frontier?
 
      (fold (lambda (a front)
@@ -140,7 +140,7 @@
            edges))
 
 
-(def (treesearch [(list-of Edge?) edges]
+(def (treesearch [(ilist-of Edge?) edges]
                  [Node? start]
                  [Node? end])
      -> (maybe Path?)
@@ -151,7 +151,7 @@
                                                    (map .reverse edges))
                                            .from
                                            Node<)))
-            (lambda ([Node? c]) -> (list-of Edge?)
+            (lambda ([Node? c]) -> (ilist-of Edge?)
                (table-ref t c '()))))
 
      (let search ((front (frontier (path (Edge start start 0))))
