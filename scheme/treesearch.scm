@@ -53,7 +53,7 @@
                          edges
                          ;; append fake edge for end node to
                          ;; make it show up:
-                         (let ((c (.to (.first edges))))
+                         (let ((c (=> edges .first .to)))
                            (list (Edge c c 0)))))))
             ;; if the first and second node are the same,
             ;; then that's because of the stupid initial
@@ -170,7 +170,7 @@
                                   (.set visited node)))))))))
 
 
-(def treesearch* (comp// 3 .view treesearch))
+(def treesearch* (=>*/arity 3 treesearch .view))
 
 
 (def (lists->Edges l)
