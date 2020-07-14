@@ -1,11 +1,2 @@
-Those are the outputs from running with debugging statements enabled:
-
- a.1  without seen check, before fixing the seen check
- b.1  with seen check, before fixing it
-
- a    without seen check, now
- b    with seen check, now
-
-Why do we now check more than in the *.1 versions??
-
-Whatever, diffing a and b shows how effective the seen check is.
+This is the output from running with debugging statements
+enabled. This was used to verify that the seen check is effective.
