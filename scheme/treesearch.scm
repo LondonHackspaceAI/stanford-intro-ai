@@ -8,12 +8,17 @@
          test)
 
 
-;; we use symbols to represent nodes
+;; Node: we use symbols to represent nodes
+
 (def Node? symbol?)
+
 (def. Node.name symbol.string)
+
 (def (Node= [Node? a] [Node? b])
      (eq? a b))
+
 (def Node< symbol<?)
+
 (def Node-cmp symbol-cmp)
 
 
