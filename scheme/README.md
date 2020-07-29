@@ -27,7 +27,7 @@ To run the tests:
 
     > (run-tests ".")
 
-To see debugging output, set :
+To see debugging output:
 
     > (set! *debug* 1)
     > (run-tests ".")
